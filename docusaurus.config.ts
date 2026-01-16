@@ -40,6 +40,20 @@ const config: Config = {
     ],
   ],
 
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        docsRouteBasePath: '/',
+        indexBlog: false,
+        highlightSearchTermsOnTargetPage: true,
+        searchResultLimits: 8,
+        searchBarShortcutHint: true,
+      },
+    ],
+  ],
+
   themeConfig: {
     image: 'img/social-card.jpg',
     colorMode: {
