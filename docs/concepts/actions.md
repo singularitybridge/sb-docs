@@ -1,0 +1,156 @@
+---
+sidebar_position: 3
+---
+
+# Actions
+
+Actions are functions that agents can call to interact with external systems, process data, or perform specific tasks. They extend agent capabilities beyond text generation.
+
+## What are Actions?
+
+Actions are:
+
+- **Function definitions** that agents can invoke
+- **Integrations** with external services
+- **Custom logic** for specific tasks
+
+## How Actions Work
+
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│    Agent     │ ──▶ │   Action     │ ──▶ │   External   │
+│   Request    │     │   Handler    │     │   Service    │
+└──────────────┘     └──────────────┘     └──────────────┘
+       │                    │                    │
+       │                    ▼                    │
+       │           ┌──────────────┐              │
+       └────────── │   Response   │ ◀────────────┘
+                   └──────────────┘
+```
+
+## Action Categories
+
+### Built-in Actions
+
+These are core actions available to all agents:
+
+| Action | Description |
+|--------|-------------|
+| `webSearch` | Search the web via Perplexity |
+| `generateOpenAiSpeech` | Text-to-speech generation |
+| `transcribeAudioWhisperFromURL` | Audio transcription |
+
+### Integration Actions
+
+Actions provided by integrations:
+
+| Integration | Actions |
+|-------------|---------|
+| **JIRA** | `createTicket`, `getTickets`, `getTicketDetails` |
+| **ElevenLabs** | `textToSpeech`, `speechToText` |
+| **Google** | `calendarEvents`, `driveFiles` |
+| **Twilio** | `sendSMS`, `makeCall` |
+
+### Custom Actions
+
+You can define custom actions for your specific needs.
+
+## Action Definition
+
+Actions are defined with a schema:
+
+```typescript
+{
+  name: "getWeather",
+  description: "Get current weather for a location",
+  parameters: {
+    type: "object",
+    properties: {
+      location: {
+        type: "string",
+        description: "City name or coordinates"
+      },
+      units: {
+        type: "string",
+        enum: ["celsius", "fahrenheit"],
+        default: "celsius"
+      }
+    },
+    required: ["location"]
+  }
+}
+```
+
+## Executing Actions
+
+When an agent decides to use an action:
+
+1. **Agent identifies need** - Based on user request
+2. **Selects action** - Chooses appropriate function
+3. **Provides arguments** - Fills in required parameters
+4. **System executes** - Action handler runs
+5. **Returns result** - Output fed back to agent
+
+### Example Flow
+
+```
+User: "Create a JIRA ticket for the login bug"
+
+Agent thinks: I need to use the createTicket action
+
+Action call:
+{
+  "name": "createTicket",
+  "arguments": {
+    "projectKey": "BUG",
+    "summary": "Login bug",
+    "description": "User reported login issue",
+    "issueType": "Bug"
+  }
+}
+
+Result: { "ticketId": "BUG-123", "url": "..." }
+
+Agent: "I've created ticket BUG-123 for the login bug."
+```
+
+## Code Execution
+
+For data processing tasks, agents can use code execution:
+
+```typescript
+// Execute custom Python code
+{
+  "action": "executeCode",
+  "arguments": {
+    "code": "import pandas as pd\ndf = pd.read_csv(file)\nprint(df.describe())",
+    "fileUrl": "https://example.com/data.csv"
+  }
+}
+```
+
+Supported operations:
+- `analyze` - Data analysis
+- `transform` - Data transformation
+- `parse_excel` - Excel file processing
+
+## Best Practices
+
+### Action Design
+
+1. **Single responsibility**: Each action does one thing well
+2. **Clear naming**: Use descriptive, verb-based names
+3. **Good descriptions**: Help the agent understand when to use it
+4. **Validation**: Validate inputs before processing
+
+### Security
+
+- Actions run with the user's permissions
+- Sensitive operations require confirmation
+- API keys are stored securely per company
+
+## Related
+
+- [Integrations Overview](/integrations/overview)
+- [Code Execution](/features/code-execution)
+- [Agents](/concepts/agents)

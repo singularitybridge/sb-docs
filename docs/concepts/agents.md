@@ -1,0 +1,92 @@
+---
+sidebar_position: 1
+---
+
+# Agents
+
+Agents (also called Assistants) are the core building blocks of SB Agent Hub. An agent is an AI-powered entity that can understand instructions, process data, and perform actions.
+
+## What is an Agent?
+
+An agent consists of:
+
+- **System Prompt**: Instructions that define the agent's behavior and capabilities
+- **LLM Configuration**: The AI model and provider settings
+- **Actions**: Functions the agent can call to interact with external systems
+- **Workspace**: Files and data available to the agent
+
+## Agent Properties
+
+| Property | Description |
+|----------|-------------|
+| `name` | Display name of the agent |
+| `description` | Brief description of the agent's purpose |
+| `llmProvider` | AI provider (`openai`, `anthropic`, `google`) |
+| `llmModel` | Specific model (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
+| `llmPrompt` | System prompt defining behavior |
+| `maxTokens` | Maximum tokens for responses |
+| `language` | Default language code |
+| `voice` | Voice ID for text-to-speech |
+
+## Example Agent Configuration
+
+```json
+{
+  "name": "Customer Support Agent",
+  "description": "Handles customer inquiries and support tickets",
+  "llmProvider": "openai",
+  "llmModel": "gpt-4o",
+  "llmPrompt": "You are a helpful customer support agent for Acme Inc. You help customers with their questions about products, orders, and returns. Be friendly, professional, and concise.",
+  "maxTokens": 4096,
+  "language": "en"
+}
+```
+
+## Agent Capabilities
+
+### 1. Natural Language Understanding
+
+Agents can understand and respond to natural language queries, maintaining context across a conversation.
+
+### 2. Function Calling (Actions)
+
+Agents can execute actions to:
+- Query databases
+- Call external APIs
+- Process files
+- Send notifications
+
+### 3. RAG (Retrieval-Augmented Generation)
+
+Agents can access a workspace of documents and use vector search to find relevant information for answering questions.
+
+### 4. Multi-Modal Support
+
+Depending on the model, agents can:
+- Process images
+- Generate images
+- Handle audio (transcription and TTS)
+
+## Best Practices
+
+### Writing Effective Prompts
+
+1. **Be specific**: Clearly define the agent's role and boundaries
+2. **Provide examples**: Show expected input/output patterns
+3. **Set constraints**: Define what the agent should NOT do
+4. **Include context**: Add relevant domain knowledge
+
+### Choosing the Right Model
+
+| Use Case | Recommended Model |
+|----------|-------------------|
+| General chat | `gpt-4o-mini`, `claude-haiku-4-5` |
+| Complex reasoning | `gpt-4o`, `claude-sonnet-4-5` |
+| Code generation | `claude-sonnet-4-5`, `gpt-4o` |
+| Fast responses | `gpt-4o-mini`, `gemini-2.5-flash` |
+
+## Related
+
+- [Creating Agents](/agents/creating-agents)
+- [Configuring Prompts](/agents/configuring-prompts)
+- [Sessions](/concepts/sessions)

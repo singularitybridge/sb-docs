@@ -1,0 +1,211 @@
+---
+sidebar_position: 1
+---
+
+# API Overview
+
+The SB Agent Hub API provides RESTful endpoints for managing AI agents, sessions, teams, and more.
+
+## Base URL
+
+```
+Production: https://api.singularitybridge.net
+Development: http://localhost:3000
+```
+
+## Authentication
+
+All API requests require authentication via Bearer token:
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  https://api.singularitybridge.net/api/assistants
+```
+
+See [Authentication](/api/authentication) for details.
+
+## Response Format
+
+### Success Response
+
+```json
+{
+  "data": { ... },
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 100
+  }
+}
+```
+
+### Error Response
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request parameters",
+    "details": [
+      { "field": "name", "message": "Name is required" }
+    ]
+  }
+}
+```
+
+## HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 429 | Rate Limited |
+| 500 | Server Error |
+
+## API Endpoints
+
+### Assistants
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/assistants` | List all assistants |
+| GET | `/api/assistants/:id` | Get assistant details |
+| POST | `/api/assistants` | Create assistant |
+| PUT | `/api/assistants/:id` | Update assistant |
+| DELETE | `/api/assistants/:id` | Delete assistant |
+| POST | `/api/assistants/:id/execute` | Execute assistant |
+
+### Sessions
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/sessions` | List sessions |
+| GET | `/api/sessions/:id` | Get session |
+| POST | `/api/sessions` | Create session |
+| DELETE | `/api/sessions/:id` | Delete session |
+
+### Teams
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/teams` | List teams |
+| GET | `/api/teams/:id` | Get team |
+| POST | `/api/teams` | Create team |
+| PUT | `/api/teams/:id` | Update team |
+| DELETE | `/api/teams/:id` | Delete team |
+
+### Workspace
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/workspace/items` | List items |
+| GET | `/api/workspace/items/get` | Get item |
+| POST | `/api/workspace/items` | Add item |
+| DELETE | `/api/workspace/items` | Delete item |
+| POST | `/api/workspace/search` | Vector search |
+
+### Costs
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/costs` | List cost records |
+| GET | `/api/costs/summary` | Get cost summary |
+| GET | `/api/costs/daily` | Daily cost breakdown |
+
+### Invites
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/invites` | List invites |
+| POST | `/api/invites` | Create invite |
+| DELETE | `/api/invites/:id/revoke` | Revoke invite |
+
+## Rate Limiting
+
+Default limits:
+- 100 requests per 15 minutes per IP
+- Higher limits for authenticated requests
+
+Headers:
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1642492800
+```
+
+## Pagination
+
+List endpoints support pagination:
+
+```bash
+GET /api/assistants?page=2&limit=20
+```
+
+Response includes meta:
+```json
+{
+  "meta": {
+    "page": 2,
+    "limit": 20,
+    "total": 150,
+    "totalPages": 8
+  }
+}
+```
+
+## Filtering
+
+Many endpoints support filtering:
+
+```bash
+# Filter by team
+GET /api/assistants?teamId=team-123
+
+# Filter by date range
+GET /api/costs?startDate=2025-01-01&endDate=2025-01-31
+
+# Sort results
+GET /api/assistants?sortBy=lastUsed&order=desc
+```
+
+## Webhooks
+
+Configure webhooks for real-time notifications:
+
+```bash
+POST /api/webhooks
+{
+  "url": "https://your-server.com/webhook",
+  "events": ["assistant.executed", "session.created"]
+}
+```
+
+## SDK & Tools
+
+### MCP Server
+
+Connect via MCP for Claude Code integration. See [MCP Server](/api/mcp-server).
+
+### cURL Examples
+
+```bash
+# List assistants
+curl -H "Authorization: Bearer $TOKEN" \
+  https://api.singularitybridge.net/api/assistants
+
+# Create assistant
+curl -X POST -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","llmProvider":"openai","llmModel":"gpt-4o"}' \
+  https://api.singularitybridge.net/api/assistants
+```
+
+## Next Steps
+
+- [Authentication](/api/authentication)
+- [MCP Server](/api/mcp-server)
+- [Endpoint Reference](/api/endpoints/assistants)

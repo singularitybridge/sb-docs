@@ -1,0 +1,133 @@
+---
+sidebar_position: 2
+---
+
+# Sessions
+
+Sessions represent conversations between users and agents. They maintain context, history, and state across multiple interactions.
+
+## What is a Session?
+
+A session is a stateful conversation container that:
+
+- Tracks message history
+- Maintains conversation context
+- Associates a user with an agent
+- Stores session-scoped data
+
+## Session Lifecycle
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Create    │ ──▶ │   Active    │ ──▶ │   Closed    │
+│   Session   │     │   Session   │     │   Session   │
+└─────────────┘     └─────────────┘     └─────────────┘
+                          │
+                          ▼
+                    ┌─────────────┐
+                    │  Messages   │
+                    │  Exchanged  │
+                    └─────────────┘
+```
+
+## Session Properties
+
+| Property | Description |
+|----------|-------------|
+| `sessionId` | Unique identifier |
+| `assistantId` | Associated agent |
+| `userId` | User who created the session |
+| `companyId` | Organization context |
+| `messages` | Conversation history |
+| `createdAt` | Session start time |
+| `updatedAt` | Last activity time |
+
+## Creating a Session
+
+### Via API
+
+```bash
+curl -X POST https://api.singularitybridge.net/api/sessions \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assistantId": "681b41850f470a9a746f280e"
+  }'
+```
+
+### Via MCP
+
+```typescript
+// Sessions are created automatically when executing agents
+const result = await mcp__agent-hub-sb__execute({
+  assistantId: "681b41850f470a9a746f280e",
+  userInput: "Hello!",
+  sessionId: "optional-existing-session-id"
+});
+```
+
+## Sending Messages
+
+Messages in a session follow this flow:
+
+1. **User sends message** → API receives request
+2. **Context loaded** → Previous messages retrieved
+3. **Agent processes** → LLM generates response
+4. **Actions executed** → Function calls handled
+5. **Response returned** → Message saved to history
+
+### Message Format
+
+```json
+{
+  "role": "user",
+  "content": "What's the weather like today?",
+  "timestamp": "2025-01-15T10:30:00Z"
+}
+```
+
+### Response with Tool Calls
+
+```json
+{
+  "role": "assistant",
+  "content": "Let me check the weather for you.",
+  "toolCalls": [
+    {
+      "name": "getWeather",
+      "arguments": { "location": "San Francisco" }
+    }
+  ]
+}
+```
+
+## Session Lifecycle
+
+Sessions are created when a user starts a conversation and remain active until explicitly closed or the user starts a new session with the same assistant.
+
+| State | Description |
+|-------|-------------|
+| `active: true` | Currently active conversation |
+| `active: false` | Closed or superseded session |
+
+Only one session per user-assistant pair can be active at a time.
+
+## Best Practices
+
+### Context Management
+
+- Keep conversation history concise for faster responses
+- Use summarization for long conversations
+- Clear old sessions to manage storage
+
+### Session Isolation
+
+- Each session is isolated to one agent
+- Users can have multiple concurrent sessions
+- Sessions are scoped to companies for multi-tenancy
+
+## Related
+
+- [Agents](/concepts/agents)
+- [Actions](/concepts/actions)
+- [Sessions API](/api/endpoints/sessions)
