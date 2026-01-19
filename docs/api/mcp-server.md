@@ -137,22 +137,77 @@ await mcp__agent-hub-sb__show_notification({
 
 ### Claude Code Configuration
 
-Add to your MCP settings:
+The MCP server uses HTTP transport. Add to your `~/.claude.json` under the project's `mcpServers`:
+
+#### Production (Recommended)
 
 ```json
 {
   "mcpServers": {
     "agent-hub-sb": {
-      "command": "node",
-      "args": ["/path/to/mcp-server.js"],
-      "env": {
-        "API_URL": "https://api.singularitybridge.net",
-        "API_KEY": "your-api-key"
+      "type": "http",
+      "url": "https://api.singularitybridge.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
       }
     }
   }
 }
 ```
+
+#### Local Development
+
+```json
+{
+  "mcpServers": {
+    "agent-hub-sb": {
+      "type": "http",
+      "url": "http://localhost:3000/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+#### Both Environments
+
+You can configure both for side-by-side testing:
+
+```json
+{
+  "mcpServers": {
+    "agent-hub-sb": {
+      "type": "http",
+      "url": "http://localhost:3000/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    },
+    "agent-hub-sb-prod": {
+      "type": "http",
+      "url": "https://api.singularitybridge.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+### Endpoints
+
+| Environment | URL |
+|-------------|-----|
+| Production | `https://api.singularitybridge.net/api/mcp` |
+| Local | `http://localhost:3000/api/mcp` |
+
+### Getting Your API Key
+
+1. Log in to the Agent Hub dashboard
+2. Go to **Settings** > **API Keys**
+3. Create or copy your API key
 
 ## Authentication
 
