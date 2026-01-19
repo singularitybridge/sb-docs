@@ -14,6 +14,7 @@ All notable changes to Agent Hub are documented here.
 
 ### Fixed
 - **OAuth Metadata URLs** - Fixed OAuth discovery endpoints to return correct production URLs by deriving base URL from request headers instead of hardcoded localhost
+- **MCP WWW-Authenticate Header** - Fixed `www-authenticate` header in 401 responses to use dynamic base URL for OAuth resource metadata discovery (RFC 9728)
 
 ---
 
