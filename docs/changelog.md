@@ -7,15 +7,23 @@ All notable changes to Agent Hub are documented here.
 ### Added
 - **Pusher to Socket.IO Migration** - Consolidated all real-time messaging to Socket.IO, removing Pusher.io dependency
 - **Session Room Support** - WebSocket session subscriptions for real-time updates
+- **MCP Session Management** - Added server-side session tracking with 1-hour TTL for MCP connections, improving connection stability
 
 ### Changed
 - **WebSocket Infrastructure** - Extended Socket.IO with session room management and React StrictMode-safe reference counting
 - **MCP Documentation** - Updated MCP server docs with HTTP transport configuration for both local and production endpoints (`https://api.singularitybridge.net/api/mcp`)
+- **MCP OAuth Simplified** - Removed static client credentials; PKCE alone validates client identity per OAuth 2.1 spec
+- **Cloudflare Configuration** - API subdomain (`api.singularitybridge.net`) now uses DNS-only mode for proper SSE streaming (Cloudflare Free plan doesn't support disabling response buffering)
 
 ### Fixed
 - **OAuth Metadata URLs** - Fixed OAuth discovery endpoints to return correct production URLs by deriving base URL from request headers instead of hardcoded localhost
 - **MCP WWW-Authenticate Header** - Fixed `www-authenticate` header in 401 responses to use dynamic base URL for OAuth resource metadata discovery (RFC 9728)
 - **MCP OAuth Authorization Flow** - Added authorization page for API key collection during OAuth flow, enabling proper authentication with Claude.ai and other MCP clients
+
+### Security
+- **Helmet.js** - Added security headers middleware
+- **CORS Whitelist** - Replaced wildcard CORS with explicit domain whitelist
+- **IP Rate Limiting** - Added per-IP rate limiting for API endpoints
 
 ---
 
