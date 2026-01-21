@@ -4,6 +4,10 @@ All notable changes to Agent Hub are documented here.
 
 ## [Unreleased]
 
+---
+
+## [January 21, 2025]
+
 ### Added
 - **Pusher to Socket.IO Migration** - Consolidated all real-time messaging to Socket.IO, removing Pusher.io dependency
 - **Session Room Support** - WebSocket session subscriptions for real-time updates
