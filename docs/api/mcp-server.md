@@ -8,7 +8,7 @@ The MCP (Model Context Protocol) server enables direct integration with Claude C
 
 ## Overview
 
-The MCP server exposes SB Agent Hub functionality as tools that can be called from Claude Code or other MCP clients.
+The MCP server exposes **30 tools** for managing agents, teams, workspaces, integrations, and more. These tools can be called from Claude Code or other MCP-compatible clients.
 
 ## Available Tools
 
@@ -23,7 +23,9 @@ The MCP server exposes SB Agent Hub functionality as tools that can be called fr
 | `update_agent_prompt` | Update agent's prompt |
 | `update_agent` | Update agent metadata |
 | `create_agent` | Create a new agent |
+| `delete_agent` | Delete an agent permanently |
 | `assign_agent_to_team` | Assign agent to teams |
+| `remove_agent_from_team` | Remove agent from teams |
 
 ### Agent Execution
 
@@ -47,6 +49,24 @@ The MCP server exposes SB Agent Hub functionality as tools that can be called fr
 | Tool | Description |
 |------|-------------|
 | `list_teams` | List all teams |
+| `get_team` | Get specific team details |
+| `create_team` | Create a new team |
+| `update_team` | Update team metadata |
+| `delete_team` | Delete a team |
+
+### Cost Tracking
+
+| Tool | Description |
+|------|-------------|
+| `get_cost_summary` | Get usage costs by model, provider, and assistant |
+
+### Integrations
+
+| Tool | Description |
+|------|-------------|
+| `list_integrations` | List all available integrations |
+| `get_integration_details` | Get detailed info about an integration |
+| `trigger_integration_action` | Execute an integration action |
 
 ### UI Control
 
@@ -130,6 +150,62 @@ await mcp__agent-hub-sb__navigate_to_page({
 await mcp__agent-hub-sb__show_notification({
   message: "Agent updated successfully!",
   type: "success"
+});
+```
+
+### Team Management
+
+```typescript
+// Create a team
+await mcp__agent-hub-sb__create_team({
+  name: "Engineering",
+  description: "Engineering team agents",
+  icon: "Code"
+});
+
+// Update a team
+await mcp__agent-hub-sb__update_team({
+  teamId: "team-id",
+  description: "Updated description"
+});
+
+// Delete a team
+await mcp__agent-hub-sb__delete_team({
+  teamId: "team-id"
+});
+```
+
+### Cost Tracking
+
+```typescript
+// Get cost summary
+const costs = await mcp__agent-hub-sb__get_cost_summary({
+  startDate: "2025-01-01",
+  endDate: "2025-01-31"
+});
+
+// Returns breakdown by model, provider, and assistant
+```
+
+### Integration Tools
+
+```typescript
+// List all integrations
+const integrations = await mcp__agent-hub-sb__list_integrations();
+
+// Get integration details
+const jiraDetails = await mcp__agent-hub-sb__get_integration_details({
+  integrationId: "jira"
+});
+
+// Trigger an action
+await mcp__agent-hub-sb__trigger_integration_action({
+  actionId: "jira.createTicket",
+  parameters: {
+    summary: "New ticket from Claude Code",
+    description: "Created via MCP",
+    projectKey: "PROJ"
+  }
 });
 ```
 

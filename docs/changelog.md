@@ -4,6 +4,17 @@ All notable changes to Agent Hub are documented here.
 
 ## [Unreleased]
 
+### Added
+- **MCP Server Expansion** - Added 17 new MCP tools bringing total to 30:
+  - Team management: `create_team`, `update_team`, `delete_team`, `get_team`
+  - Agent management: `delete_agent`, `remove_agent_from_team`
+  - Cost tracking: `get_cost_summary`
+  - Integration tools: `list_integrations`, `get_integration_details`, `trigger_integration_action`
+  - Execute tool now supports `responseFormat` for JSON mode
+
+### Changed
+- **MCP Session Handling** - Auto-recovery for stale sessions: authenticated clients with expired session IDs now get new sessions automatically instead of errors
+
 ---
 
 ## [January 21, 2025]
