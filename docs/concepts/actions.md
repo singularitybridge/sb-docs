@@ -49,7 +49,6 @@ Actions provided by integrations:
 | **JIRA** | `createTicket`, `getTickets`, `getTicketDetails` |
 | **ElevenLabs** | `textToSpeech`, `speechToText` |
 | **Google** | `calendarEvents`, `driveFiles` |
-| **Twilio** | `sendSMS`, `makeCall` |
 
 ### Custom Actions
 

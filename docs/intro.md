@@ -27,7 +27,6 @@ Extend your agents with powerful integrations:
 - **JIRA** - Create and manage tickets
 - **Perplexity** - Web search capabilities
 - **ElevenLabs** - Text-to-speech and voice
-- **Twilio** - SMS and voice calls
 - **Google** - Calendar, Drive, and more
 
 ### Enterprise Ready
@@ -53,7 +52,7 @@ Extend your agents with powerful integrations:
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Integrations                            │
-│  OpenAI │ Anthropic │ Google │ JIRA │ ElevenLabs │ Twilio   │
+│  OpenAI │ Anthropic │ Google │ JIRA │ ElevenLabs │ SendGrid │
 └─────────────────────────────────────────────────────────────┘
 ```
 

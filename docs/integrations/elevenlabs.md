@@ -196,5 +196,4 @@ await mcp__ElevenLabs__create_agent({
 ## Related
 
 - [OpenAI Integration](/integrations/openai)
-- [Twilio Integration](/integrations/twilio)
 - [Integrations Overview](/integrations/overview)

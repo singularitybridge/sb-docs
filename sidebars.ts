@@ -35,7 +35,6 @@ const sidebars: SidebarsConfig = {
         'integrations/google',
         'integrations/jira',
         'integrations/perplexity',
-        'integrations/twilio',
       ],
     },
     {

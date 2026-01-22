@@ -20,7 +20,7 @@ Versatile agents that can handle a wide range of tasks:
 
 Agents configured for specific domains:
 - **Product Management**: JIRA integration, sprint planning
-- **Voice Assistants**: Phone integration via VAPI/Twilio
+- **Voice Assistants**: Phone integration via VAPI
 - **Code Review**: Repository analysis and suggestions
 - **Research**: Web search and document analysis
 

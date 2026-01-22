@@ -23,7 +23,6 @@ Integrations extend agent capabilities by connecting to external services. They 
 |-------------|-------------|
 | SendGrid | Email delivery |
 | Nylas | Email and calendar (OAuth) |
-| [Twilio](/integrations/twilio) | SMS and voice calls |
 
 ### Project Management
 
