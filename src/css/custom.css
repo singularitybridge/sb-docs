@@ -781,3 +781,27 @@ h4:hover .hash-link {
 .hash-link:hover {
   opacity: 1 !important;
 }
+
+/* ===================
+   HOMEPAGE STYLES
+   =================== */
+
+/* Homepage wrapper */
+.homepage-wrapper {
+  width: 100%;
+}
+
+/* Make article full width on homepage */
+article:has(.homepage-wrapper) {
+  max-width: 100% !important;
+}
+
+/* Hide breadcrumbs on homepage */
+[class*="docRoot_"]:has(.homepage-wrapper) .theme-doc-breadcrumbs {
+  display: none !important;
+}
+
+/* Hide pagination on homepage */
+[class*="docRoot_"]:has(.homepage-wrapper) .pagination-nav {
+  display: none !important;
+}
