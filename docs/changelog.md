@@ -5,15 +5,42 @@ All notable changes to Agent Hub are documented here.
 ## [Unreleased]
 
 ### Added
-- **MCP Server Expansion** - Added 17 new MCP tools bringing total to 30:
+- **IntegrationConfig System** - New per-integration API key management:
+  - Dedicated `IntegrationConfig` MongoDB model for storing integration credentials
+  - REST API endpoints for managing integration configurations (`/api/integrations/:id/config`)
+  - Connection validation for configured integrations
+  - Caching layer with 15-minute TTL for API key retrieval
+  - All integrations now declare `requiredApiKeys` in their config
+- **Anthropic Integration** - Standalone Anthropic Claude integration with actions:
+  - `claudeGenerateText`, `claudeAnalyzeImage`, `claudeChat`, `claudeSummarize`
+  - Connection validation support
+- **Gemini Integration** - Standalone Google Gemini integration with actions:
+  - `geminiGenerateText`, `geminiAnalyzeImage`, `geminiChat`, `geminiSummarize`
+  - Connection validation support
+- **MCP Server Expansion** - Added 18 new MCP tools bringing total to 31:
   - Team management: `create_team`, `update_team`, `delete_team`, `get_team`
   - Agent management: `delete_agent`, `remove_agent_from_team`
   - Cost tracking: `get_cost_summary`
   - Integration tools: `list_integrations`, `get_integration_details`, `trigger_integration_action`
+  - Model discovery: `list_models` - lists all available LLM models by provider
   - Execute tool now supports `responseFormat` for JSON mode
 
 ### Changed
+- **AI Models Updated (January 2026)** - Updated all LLM providers to latest models:
+  - **OpenAI**: Added GPT-5.2, GPT-5.1, GPT-5, GPT-5-mini, GPT-5-nano, O3, O3-pro, O4-mini
+  - **Anthropic**: Updated to Claude 4.5 series (Opus, Sonnet, Haiku)
+  - **Google**: Gemini 3 Flash/Pro (preview), kept Gemini 2.5 series
+- **Cost Tracking Pricing** - Updated model pricing for all new models
+- **API Key Retrieval** - `getApiKey` now checks IntegrationConfig first, falls back to legacy Company.api_keys
 - **MCP Session Handling** - Auto-recovery for stale sessions: authenticated clients with expired session IDs now get new sessions automatically instead of errors
+
+### Removed
+- **Deprecated Models** - Removed retired/deprecated models:
+  - Claude 3.x series (retired October 2025 - January 2026)
+  - Gemini 2.0 Flash (deprecated, shutdown March 31, 2026)
+  - GPT-4-turbo, GPT-3.5-turbo (legacy)
+- **Unused Integrations** - Removed fluximage, photoroom, terminal_turtle integrations
+- **Company Token/Identifiers** - Removed unused `token` and `identifiers` fields from Company model
 
 ---
 
