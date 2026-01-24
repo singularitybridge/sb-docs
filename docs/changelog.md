@@ -5,6 +5,12 @@ All notable changes to Agent Hub are documented here.
 ## [Unreleased]
 
 ### Added
+- **Tool Call Visibility** - Expose tool call information in API and MCP responses:
+  - New `includeToolCalls` parameter for execute endpoints
+  - MCP execute shows tool calls by default (tool name, args, results)
+  - HTTP API execute hides tool calls by default (backward compatible)
+  - Aggregates tool calls from ALL steps in multi-step execution
+  - API Integration dialog in UI with "Show Tool Calls" option and Response/Raw JSON toggle
 - **Integrations Management UI** - New dedicated page for managing integrations:
   - Integrations page (`/admin/integrations`) with card-based layout
   - Integration detail page with API key configuration and connection testing

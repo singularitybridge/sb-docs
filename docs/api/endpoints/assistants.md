@@ -163,42 +163,121 @@ DELETE /api/assistants/:id
 
 ## Execute Assistant
 
-Execute an assistant with user input.
+Execute an assistant with user input (stateless execution).
 
 ```http
-POST /api/assistants/:id/execute
+POST /api/assistant/:id/execute
 ```
+
+:::tip
+The endpoint uses singular `/assistant/` (not `/assistants/`). You can use either the assistant ID or name.
+:::
 
 ### Request Body
 
 ```json
 {
-  "userInput": "Hello, I need help with my order",
-  "sessionId": "optional-session-id",
+  "userInput": "Search JIRA for issues about login",
+  "includeToolCalls": true,
+  "promptOverride": "Optional custom system prompt",
   "attachments": [
     {
       "type": "url",
       "mimeType": "image/png",
       "url": "https://example.com/image.png"
     }
-  ]
+  ],
+  "responseFormat": {
+    "type": "json_object"
+  }
 }
 ```
 
-### Response
+### Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `userInput` | string | required | The user message to send |
+| `includeToolCalls` | boolean | `false` | Include tool call details in response |
+| `promptOverride` | string | - | Override the assistant's system prompt |
+| `attachments` | array | - | File attachments (URL or base64) |
+| `responseFormat` | object | - | Set to `{type: "json_object"}` for JSON mode |
+
+### Response (with `includeToolCalls: true`)
 
 ```json
 {
-  "response": "Hello! I'd be happy to help with your order. Could you please provide your order number?",
-  "sessionId": "session-123",
-  "usage": {
-    "inputTokens": 150,
-    "outputTokens": 45,
-    "totalTokens": 195
-  },
-  "toolCalls": []
+  "id": "msg_1769282796319_yioec2g7n",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": {
+        "value": "Here are some JIRA issues related to login..."
+      }
+    }
+  ],
+  "created_at": 1769282796,
+  "assistant_id": "681b41850f470a9a746f280e",
+  "message_type": "tool_calls",
+  "data": {
+    "toolCalls": [
+      {
+        "toolName": "jira_fetchTickets",
+        "input": {
+          "jql": "summary ~ login",
+          "maxResults": 10
+        }
+      }
+    ],
+    "toolResults": [
+      {
+        "toolName": "jira_fetchTickets",
+        "output": [
+          {
+            "key": "WM-762",
+            "summary": "Add field for user last login",
+            "status": "Done"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
+
+### Response (without `includeToolCalls` - default)
+
+```json
+{
+  "id": "msg_1769282819803_8zpglqemv",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": {
+        "value": "Here are some JIRA issues related to authentication..."
+      }
+    }
+  ],
+  "created_at": 1769282819,
+  "assistant_id": "681b41850f470a9a746f280e",
+  "message_type": "text"
+}
+```
+
+### Streaming Response
+
+Add `Accept: text/event-stream` header for SSE streaming:
+
+```http
+POST /api/assistant/:id/execute
+Accept: text/event-stream
+```
+
+Streaming events:
+- `data:{"type":"token","value":"Hello"}` - Text tokens
+- `data:{"type":"done"}` - Stream complete
 
 ## Prompt History
 

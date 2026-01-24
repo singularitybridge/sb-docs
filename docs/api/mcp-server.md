@@ -82,12 +82,43 @@ The MCP server exposes **30 tools** for managing agents, teams, workspaces, inte
 ### Execute Agent
 
 ```typescript
+// Basic execution
 await mcp__agent-hub-sb__execute({
   assistantId: "681b41850f470a9a746f280e",
-  userInput: "Hello, how can you help me?",
-  sessionId: "optional-session-id"
+  userInput: "Search JIRA for issues about login"
+});
+
+// With all options
+await mcp__agent-hub-sb__execute({
+  assistantId: "Anna",  // Can use ID or name
+  userInput: "Search JIRA for issues about login",
+  sessionId: "optional-session-id",
+  systemPromptOverride: "You are a helpful assistant...",
+  includeToolCalls: true  // Default: true for MCP
 });
 ```
+
+:::tip Tool Call Visibility
+MCP execute includes tool calls in the response by default. The response will show:
+- Which tools were called
+- Arguments passed to each tool
+- Results returned from each tool
+
+Example response:
+```
+Here are the JIRA issues about login...
+
+---
+**Tool Calls (1):**
+[
+  {
+    "tool": "jira_fetchTickets",
+    "args": { "jql": "summary ~ login" },
+    "result": [{ "key": "WM-762", "summary": "Add login field" }]
+  }
+]
+```
+:::
 
 ### List Agents
 
