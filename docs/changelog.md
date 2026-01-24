@@ -24,15 +24,17 @@ All notable changes to Agent Hub are documented here.
 - **Gemini Integration** - Standalone Google Gemini integration with actions:
   - `geminiGenerateText`, `geminiAnalyzeImage`, `geminiChat`, `geminiSummarize`
   - Connection validation support
-- **MCP Server Expansion** - Added 19 new MCP tools bringing total to 32:
+- **MCP Server Expansion** - Added 22 new MCP tools bringing total to 36:
   - Team management: `create_team`, `update_team`, `delete_team`, `get_team`
   - Agent management: `delete_agent`, `remove_agent_from_team`
-  - Cost tracking: `get_cost_summary`
+  - Cost tracking: `get_cost_summary`, `get_daily_costs` (daily breakdown with trends)
   - Integration tools: `list_integrations`, `get_integration_details`, `trigger_integration_action`
   - Model discovery: `list_models` - lists all available LLM models by provider with pricing (input/output cost per 1K tokens)
   - Agent actions: `update_agent_actions` - enable/disable integration actions for agents (setActions, addActions, removeActions)
   - Integration status: `check_integration_status` - verify if integrations have required API keys configured, optionally test connection
+  - Prompt history: `list_prompt_history`, `get_prompt_version` - view and retrieve prompt version history
   - Execute tool now supports `responseFormat` for JSON mode
+  - `update_agent` now supports `maxTokens` parameter
 
 ### Changed
 - **AI Models Updated (January 2026)** - Updated all LLM providers to latest models:
