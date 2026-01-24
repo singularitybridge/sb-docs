@@ -5,6 +5,13 @@ All notable changes to Agent Hub are documented here.
 ## [Unreleased]
 
 ### Added
+- **Integrations Management UI** - New dedicated page for managing integrations:
+  - Integrations page (`/admin/integrations`) with card-based layout
+  - Integration detail page with API key configuration and connection testing
+  - Search and category filtering
+  - Real-time configuration status display
+  - Test connection button for validating credentials
+  - Removed legacy API key management from company settings
 - **IntegrationConfig System** - New per-integration API key management:
   - Dedicated `IntegrationConfig` MongoDB model for storing integration credentials
   - REST API endpoints for managing integration configurations (`/api/integrations/:id/config`)
