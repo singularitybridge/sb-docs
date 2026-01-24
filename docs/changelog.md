@@ -24,6 +24,7 @@ All notable changes to Agent Hub are documented here.
   - Integration tools: `list_integrations`, `get_integration_details`, `trigger_integration_action`
   - Model discovery: `list_models` - lists all available LLM models by provider with pricing (input/output cost per 1K tokens)
   - Agent actions: `update_agent_actions` - enable/disable integration actions for agents (setActions, addActions, removeActions)
+  - Integration status: `check_integration_status` - verify if integrations have required API keys configured, optionally test connection
   - Execute tool now supports `responseFormat` for JSON mode
 
 ### Changed
