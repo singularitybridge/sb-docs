@@ -22,7 +22,7 @@ All notable changes to Agent Hub are documented here.
   - Agent management: `delete_agent`, `remove_agent_from_team`
   - Cost tracking: `get_cost_summary`
   - Integration tools: `list_integrations`, `get_integration_details`, `trigger_integration_action`
-  - Model discovery: `list_models` - lists all available LLM models by provider
+  - Model discovery: `list_models` - lists all available LLM models by provider with pricing (input/output cost per 1K tokens)
   - Execute tool now supports `responseFormat` for JSON mode
 
 ### Changed
