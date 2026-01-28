@@ -5,6 +5,13 @@ All notable changes to Agent Hub are documented here.
 ## [Unreleased]
 
 ### Added
+- **MCP Session Management Tools** - 6 new tools for programmatic agent testing (total 42 tools):
+  - `create_session` - Start new session with agent (by ID or name)
+  - `send_message` - Send message and get assistant response
+  - `get_session_messages` - Retrieve message history with pagination
+  - `list_sessions` - List sessions with agent/status filters
+  - `clear_session` - Reset session (delete messages, keep session)
+  - `delete_session` - Permanently delete session and messages
 - **Tool Call Visibility** - Expose tool call information in API and MCP responses:
   - New `includeToolCalls` parameter for execute endpoints
   - MCP execute shows tool calls by default (tool name, args, results)
@@ -43,6 +50,13 @@ All notable changes to Agent Hub are documented here.
   - `update_agent` now supports `maxTokens` parameter
 
 ### Changed
+- **Integration Development Docs** - Updated developer documentation to reflect current implementation:
+  - New `requiredApiKeys` array structure with label, type, placeholder, description, helpUrl
+  - Added `displayName` field for integrations
+  - Updated credentials flow (credentials object instead of single apiKey)
+  - Complete integration example with config and actions
+  - Updated built-in integrations list (25 integrations across 7 categories)
+- **Tool Result Correlation Fix** - Fixed bug where MCP execute tool matched results by toolName instead of toolCallId, causing incorrect correlation when same tool called multiple times
 - **AI Models Updated (January 2026)** - Updated all LLM providers to latest models:
   - **OpenAI**: Added GPT-5.2, GPT-5.1, GPT-5, GPT-5-mini, GPT-5-nano, O3, O3-pro, O4-mini
   - **Anthropic**: Updated to Claude 4.5 series (Opus, Sonnet, Haiku)
