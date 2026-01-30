@@ -68,18 +68,6 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'apiSidebar',
-          position: 'left',
-          label: 'API Reference',
-        },
-        {
           href: 'https://github.com/singularitybridge/sb-agent-hub',
           label: 'GitHub',
           position: 'right',
@@ -90,15 +78,32 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Documentation',
+          title: 'Learn',
           items: [
             {
               label: 'Getting Started',
               to: '/getting-started',
             },
             {
+              label: 'Concepts',
+              to: '/concepts/agents',
+            },
+            {
               label: 'Agents',
               to: '/agents/overview',
+            },
+          ],
+        },
+        {
+          title: 'Reference',
+          items: [
+            {
+              label: 'API Reference',
+              to: '/api/overview',
+            },
+            {
+              label: 'MCP Server',
+              to: '/api/mcp-server',
             },
             {
               label: 'Integrations',
@@ -107,29 +112,20 @@ const config: Config = {
           ],
         },
         {
-          title: 'API',
-          items: [
-            {
-              label: 'REST API',
-              to: '/api/overview',
-            },
-            {
-              label: 'MCP Server',
-              to: '/api/mcp-server',
-            },
-          ],
-        },
-        {
-          title: 'More',
+          title: 'Community',
           items: [
             {
               label: 'GitHub',
               href: 'https://github.com/singularitybridge/sb-agent-hub',
             },
+            {
+              label: 'Changelog',
+              to: '/changelog',
+            },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Singularity Bridge. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Singularity Bridge.`,
     },
     prism: {
       theme: prismThemes.github,

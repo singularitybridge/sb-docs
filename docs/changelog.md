@@ -4,6 +4,13 @@ All notable changes to Agent Hub are documented here.
 
 ## [Unreleased]
 
+### Changed
+- **Integration Documentation Restructured** - Separated user docs from developer docs:
+  - `/integrations/overview` now only shows existing integrations catalog
+  - `/developers/integration-development` is the technical guide for building integrations
+  - Added AI coding agent prompt template for integration development
+  - Added Claude integration to sidebar navigation
+
 ### Added
 - **MCP Session Management Tools** - 6 new tools for programmatic agent testing (total 42 tools):
   - `create_session` - Start new session with agent (by ID or name)

@@ -128,80 +128,17 @@ Agents can call integration actions:
 }
 ```
 
-## Integration Framework
-
-### Structure
-
-Each integration follows this structure:
-
-```
-/src/integrations/
-├── jira/
-│   ├── index.ts          # Export configuration
-│   ├── actions.ts        # Action definitions
-│   └── service.ts        # Business logic
-├── openai/
-│   ├── index.ts
-│   ├── actions.ts
-│   └── service.ts
-└── index.ts              # Registry
-```
-
-### Creating Custom Integrations
-
-1. Create integration folder
-2. Define actions with schemas
-3. Implement service functions
-4. Register in integrations index
-
-Example action definition:
-
-```typescript
-export const myAction = {
-  name: "myAction",
-  description: "Does something useful",
-  parameters: {
-    type: "object",
-    properties: {
-      input: {
-        type: "string",
-        description: "Input value"
-      }
-    },
-    required: ["input"]
-  },
-  handler: async (args, context) => {
-    // Implementation
-    return { result: "success" };
-  }
-};
-```
-
-## Security Considerations
-
-### API Key Storage
-
-- Keys stored encrypted at rest
-- Scoped to company level
-- Never exposed to frontend
-
-### Access Control
-
-- Actions inherit user permissions
-- Sensitive operations logged
-- Rate limiting applied
-
-### Data Handling
-
-- Minimize data passed to external APIs
-- Sanitize inputs
-- Validate responses
-
 ## Next Steps
 
 Explore specific integrations:
 
 - [OpenAI](/integrations/openai) - AI services
+- [Claude](/integrations/claude) - Connect to Claude AI
 - [ElevenLabs](/integrations/elevenlabs) - Voice synthesis
+- [Google](/integrations/google) - Google services
 - [JIRA](/integrations/jira) - Ticket management
 - [Perplexity](/integrations/perplexity) - Web search
+
+---
+
+**Want to build your own integration?** See the [Building Integrations](/developers/integration-development) guide.

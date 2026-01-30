@@ -4,10 +4,10 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     'intro',
     'getting-started',
-    'changelog',
     {
       type: 'category',
-      label: 'Core Concepts',
+      label: 'Concepts',
+      collapsed: false,
       items: [
         'concepts/agents',
         'concepts/sessions',
@@ -31,19 +31,11 @@ const sidebars: SidebarsConfig = {
       items: [
         'integrations/overview',
         'integrations/openai',
+        'integrations/claude',
         'integrations/elevenlabs',
         'integrations/google',
         'integrations/jira',
         'integrations/perplexity',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Developers',
-      items: [
-        'developers/authentication',
-        'developers/agent-api',
-        'developers/integration-development',
       ],
     },
     {
@@ -59,6 +51,36 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'API Reference',
+      items: [
+        'api/overview',
+        'api/authentication',
+        'api/mcp-server',
+        {
+          type: 'category',
+          label: 'Endpoints',
+          items: [
+            'api/endpoints/assistants',
+            'api/endpoints/sessions',
+            'api/endpoints/teams',
+            'api/endpoints/workspace',
+            'api/endpoints/costs',
+            'api/endpoints/invites',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Developers',
+      items: [
+        'developers/authentication',
+        'developers/agent-api',
+        'developers/integration-development',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Deployment',
       items: [
         'deployment/overview',
@@ -66,23 +88,7 @@ const sidebars: SidebarsConfig = {
         'deployment/docker',
       ],
     },
-  ],
-  apiSidebar: [
-    'api/overview',
-    'api/authentication',
-    'api/mcp-server',
-    {
-      type: 'category',
-      label: 'Endpoints',
-      items: [
-        'api/endpoints/assistants',
-        'api/endpoints/sessions',
-        'api/endpoints/teams',
-        'api/endpoints/workspace',
-        'api/endpoints/costs',
-        'api/endpoints/invites',
-      ],
-    },
+    'changelog',
   ],
 };
 

@@ -53,10 +53,29 @@ docs/
 ├── api/                  # API reference
 ├── concepts/             # Core concepts
 ├── deployment/           # Deployment guides
-├── developers/           # Developer guides
+├── developers/           # Developer guides (including integration development)
 ├── features/             # Feature documentation
-└── integrations/         # Integration guides
+└── integrations/         # Integration catalog (existing integrations only)
 ```
+
+### Integration Documentation
+
+The integration documentation is split into two areas:
+
+1. **`/integrations/overview`** - Catalog of existing integrations
+   - Lists available integrations by category
+   - How to configure integrations (API keys)
+   - How to use integrations with agents
+   - Links to individual integration docs
+
+2. **`/developers/integration-development`** - Technical guide for building integrations
+   - Complete step-by-step guide for developers
+   - Integration structure and file formats
+   - Action definitions and best practices
+   - AI coding agent prompt template
+   - Testing workflow
+
+**Important**: Keep these separate - the overview is for users wanting to USE integrations, the developer guide is for those wanting to BUILD new integrations.
 
 ## PM2 Configuration
 
