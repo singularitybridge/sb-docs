@@ -1,0 +1,453 @@
+---
+sidebar_position: 2
+title: Agent Execute API
+description: Execute agents programmatically via REST API
+---
+
+import AiQuickStart from '@site/src/components/AiQuickStart';
+
+# Agent Execute API
+
+Execute AI agents programmatically using a simple REST API. Send a message, get a response.
+
+<AiQuickStart
+  title="Want to integrate quickly?"
+  description="Copy this prompt to your AI coding agent to build an integration."
+  prompt={`I want to integrate with the Agent Hub Execute API.
+
+Help me build it:
+
+1. First, read the Agent Execute API documentation at the URL below
+2. Ask me:
+   - What language/framework I'm using (Node.js, Python, etc.)
+   - What agent I want to execute (I'll provide the name or ID)
+   - Whether I need streaming responses
+   - Whether I need to override the system prompt
+3. Generate working code that:
+   - Authenticates with my API key
+   - Sends requests to the execute endpoint
+   - Handles the response (streaming or JSON)
+   - Includes proper error handling
+
+My API key is stored in an environment variable.`}
+/>
+
+## Getting Your API Key
+
+Before making API calls, you need an API key:
+
+1. Go to **Admin > API Keys** in the Agent Hub dashboard
+2. Click **Create API Key**
+3. Copy the key (it's only shown once)
+4. Store it securely as an environment variable
+
+```bash
+export AGENT_HUB_API_KEY="sk_live_your_key_here"
+```
+
+## Endpoint
+
+```
+POST /api/assistant/{assistantId}/execute
+```
+
+The `assistantId` can be either:
+- The agent's **ID** (e.g., `681b41850f470a9a746f280e`)
+- The agent's **name** (e.g., `my-support-agent`)
+
+## Authentication
+
+Include your API key in the Authorization header:
+
+```
+Authorization: Bearer sk_live_xxx
+```
+
+## Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `userInput` | string | Yes | The message to send to the agent |
+| `attachments` | array | No | Files or URLs to include |
+| `promptOverride` | string | No | Override the agent's system prompt |
+| `responseFormat` | object | No | Request structured JSON output |
+| `includeToolCalls` | boolean | No | Include tool call details in response |
+
+## Basic Usage
+
+### Simple Request
+
+```bash
+curl -X POST 'https://api.singularitybridge.net/api/assistant/my-agent/execute' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer sk_live_xxx' \
+  -d '{
+    "userInput": "Hello, how can you help me?"
+  }'
+```
+
+### Response
+
+```json
+{
+  "id": "msg_1701234567890_abc123",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": {
+        "value": "Hello! I can help you with..."
+      }
+    }
+  ],
+  "created_at": 1701234567,
+  "assistant_id": "my-agent",
+  "message_type": "text"
+}
+```
+
+## Request Options
+
+### Prompt Override
+
+Temporarily override the agent's system prompt for this request:
+
+```json
+{
+  "userInput": "Summarize this document",
+  "promptOverride": "You are a concise summarizer. Respond in bullet points only."
+}
+```
+
+This is useful for:
+- Testing different prompts without modifying the agent
+- Customizing behavior for specific use cases
+- A/B testing prompt variations
+
+### JSON Response Mode
+
+Request structured JSON output:
+
+```json
+{
+  "userInput": "Extract the contact information from this text: John Doe, john@example.com, 555-1234",
+  "responseFormat": {
+    "type": "json_object"
+  }
+}
+```
+
+The agent will return valid JSON:
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "555-1234"
+}
+```
+
+### Include Tool Calls
+
+See what tools the agent used during execution:
+
+```json
+{
+  "userInput": "Search JIRA for login issues",
+  "includeToolCalls": true
+}
+```
+
+Response includes tool details:
+
+```json
+{
+  "content": "I found 3 issues related to login...",
+  "message_type": "tool_results",
+  "data": {
+    "toolCalls": [
+      {
+        "tool": "jira_searchIssues",
+        "args": { "jql": "summary ~ login" }
+      }
+    ],
+    "toolResults": [
+      {
+        "tool": "jira_searchIssues",
+        "result": [
+          { "key": "PROJ-123", "summary": "Login timeout issue" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### File Attachments
+
+Send files with your request using base64 encoding:
+
+```json
+{
+  "userInput": "Analyze this document",
+  "attachments": [
+    {
+      "data": "base64_encoded_content_here",
+      "mimeType": "application/pdf",
+      "fileName": "report.pdf"
+    }
+  ]
+}
+```
+
+### URL Attachments
+
+Reference files by URL:
+
+```json
+{
+  "userInput": "Summarize this article",
+  "attachments": [
+    {
+      "url": "https://example.com/article.pdf",
+      "mimeType": "application/pdf",
+      "fileName": "article.pdf"
+    }
+  ]
+}
+```
+
+## Streaming Responses
+
+For real-time token-by-token output, add the `Accept: text/event-stream` header.
+
+### Request
+
+```bash
+curl -X POST 'https://api.singularitybridge.net/api/assistant/my-agent/execute' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer sk_live_xxx' \
+  -H 'Accept: text/event-stream' \
+  -d '{"userInput": "Write a detailed analysis"}' \
+  --no-buffer
+```
+
+### Event Stream Format
+
+```
+data:{"type":"token","value":"Here"}
+data:{"type":"token","value":" is"}
+data:{"type":"token","value":" the"}
+data:{"type":"token","value":" analysis"}
+data:{"type":"done"}
+```
+
+### JavaScript Streaming Example
+
+```javascript
+const response = await fetch('https://api.singularitybridge.net/api/assistant/my-agent/execute', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${apiKey}`,
+    'Accept': 'text/event-stream'
+  },
+  body: JSON.stringify({ userInput: 'Hello' })
+});
+
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+let fullMessage = '';
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+
+  const chunk = decoder.decode(value, { stream: true });
+  const lines = chunk.split('\n');
+
+  for (const line of lines) {
+    if (line.startsWith('data:')) {
+      try {
+        const data = JSON.parse(line.slice(5));
+        if (data.type === 'token') {
+          fullMessage += data.value;
+          console.log(data.value); // Real-time output
+        } else if (data.type === 'done') {
+          console.log('\nComplete!');
+        }
+      } catch (e) {
+        continue; // Skip invalid lines
+      }
+    }
+  }
+}
+```
+
+### Python Streaming Example
+
+```python
+import requests
+import json
+
+response = requests.post(
+    'https://api.singularitybridge.net/api/assistant/my-agent/execute',
+    headers={
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {api_key}',
+        'Accept': 'text/event-stream'
+    },
+    json={'userInput': 'Hello'},
+    stream=True
+)
+
+full_message = ''
+for line in response.iter_lines(decode_unicode=True):
+    if line and line.startswith('data:'):
+        try:
+            data = json.loads(line[5:])
+            if data.get('type') == 'token':
+                full_message += data.get('value', '')
+                print(data.get('value', ''), end='', flush=True)
+            elif data.get('type') == 'done':
+                print('\nComplete!')
+        except json.JSONDecodeError:
+            continue
+```
+
+## Code Examples
+
+### JavaScript (Node.js)
+
+```javascript
+const AGENT_HUB_API = 'https://api.singularitybridge.net';
+const API_KEY = process.env.AGENT_HUB_API_KEY;
+
+async function executeAgent(agentName, message, options = {}) {
+  const payload = {
+    userInput: message,
+    ...options
+  };
+
+  const response = await fetch(
+    `${AGENT_HUB_API}/api/assistant/${encodeURIComponent(agentName)}/execute`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  // Extract text content
+  if (data.content?.[0]?.text?.value) {
+    return data.content[0].text.value;
+  }
+  return data;
+}
+
+// Usage
+const response = await executeAgent('my-support-agent', 'How do I reset my password?');
+console.log(response);
+
+// With options
+const response = await executeAgent('my-agent', 'Analyze this', {
+  promptOverride: 'Be very concise',
+  responseFormat: { type: 'json_object' }
+});
+```
+
+### Python
+
+```python
+import os
+import requests
+
+AGENT_HUB_API = 'https://api.singularitybridge.net'
+API_KEY = os.environ['AGENT_HUB_API_KEY']
+
+def execute_agent(agent_name, message, **options):
+    payload = {'userInput': message, **options}
+
+    response = requests.post(
+        f'{AGENT_HUB_API}/api/assistant/{agent_name}/execute',
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {API_KEY}'
+        },
+        json=payload
+    )
+
+    response.raise_for_status()
+    data = response.json()
+
+    # Extract text content
+    if 'content' in data and data['content']:
+        return data['content'][0]['text']['value']
+    return data
+
+# Usage
+response = execute_agent('my-support-agent', 'How do I reset my password?')
+print(response)
+
+# With options
+response = execute_agent(
+    'my-agent',
+    'Analyze this',
+    promptOverride='Be very concise',
+    responseFormat={'type': 'json_object'}
+)
+```
+
+## Using the API Console
+
+The Agent Hub UI includes a built-in API console for testing:
+
+1. Open any agent in the chat interface
+2. Click the **Code** button (`</>`) in the chat header
+3. Select your language (JavaScript, Python, cURL)
+4. Toggle options (streaming, prompt override, JSON mode, etc.)
+5. Use the **Test API** button to execute requests directly
+
+The console generates working code samples and lets you test the API without leaving the UI.
+
+## Error Responses
+
+```json
+{
+  "error": "Agent not found or access denied for this company."
+}
+```
+
+| Status | Description |
+|--------|-------------|
+| `400` | Invalid request (missing userInput, etc.) |
+| `401` | Invalid or missing API key |
+| `404` | Agent not found or not accessible |
+| `500` | Server error |
+
+## Best Practices
+
+**Use agent names** — Names are more readable than IDs and work the same way.
+
+**Store keys securely** — Use environment variables, never commit API keys.
+
+**Handle errors** — Always check response status and handle failures gracefully.
+
+**Use streaming for long responses** — Provides better UX for lengthy outputs.
+
+**Test with the API console first** — Verify your requests work before writing code.
+
+## Related
+
+- [MCP Server](/api/mcp-server) — Use MCP tools instead of REST API
+- [Authentication](/api/authentication) — API key management
+- [Agents](/concepts/agents) — Understanding agents
