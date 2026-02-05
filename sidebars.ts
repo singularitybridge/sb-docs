@@ -18,6 +18,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Agents',
+      collapsed: false,
       items: [
         'agents/overview',
         'agents/creating-agents',
@@ -28,19 +29,23 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Integrations',
+      collapsed: false,
       items: [
         'integrations/overview',
         'integrations/openai',
         'integrations/claude',
         'integrations/elevenlabs',
+        'integrations/fly',
         'integrations/google',
         'integrations/jira',
+        'integrations/opencode-sandbox',
         'integrations/perplexity',
       ],
     },
     {
       type: 'category',
       label: 'Features',
+      collapsed: false,
       items: [
         'features/rag',
         'features/vector-search',
@@ -52,6 +57,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'API Reference',
+      collapsed: false,
       items: [
         'api/overview',
         'api/authentication',
@@ -59,6 +65,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Endpoints',
+          collapsed: false,
           items: [
             'api/endpoints/assistants',
             'api/endpoints/sessions',
@@ -73,6 +80,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Developers',
+      collapsed: false,
       items: [
         'developers/authentication',
         'developers/agent-api',
@@ -82,6 +90,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Deployment',
+      collapsed: false,
       items: [
         'deployment/overview',
         'deployment/environment-variables',

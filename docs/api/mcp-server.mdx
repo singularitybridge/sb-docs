@@ -1,0 +1,500 @@
+---
+sidebar_position: 3
+---
+
+import AiQuickStart from '@site/src/components/AiQuickStart';
+
+# MCP Server
+
+Connect Claude Code directly to Agent Hub using the Model Context Protocol (MCP).
+
+<AiQuickStart
+  title="Want to get started quickly?"
+  description="Copy this config to your ~/.claude.json and replace YOUR_API_KEY with your key from Settings > API Keys."
+  prompt={`Add this to your ~/.claude.json:
+
+{
+  "mcpServers": {
+    "agent-hub": {
+      "type": "http",
+      "url": "https://api.singularitybridge.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+
+Then restart Claude Code. You'll have access to 42 tools for managing agents, teams, workspaces, and more.`}
+  includePageUrl={false}
+/>
+
+## Connection Setup
+
+### Get Your API Key
+
+1. Log in to the Agent Hub dashboard
+2. Navigate to **Settings > API Keys**
+3. Create a new key or copy an existing one
+
+### Configure Claude Code
+
+Add the MCP server to your Claude Code configuration file (`~/.claude.json`):
+
+#### Production
+
+```json
+{
+  "mcpServers": {
+    "agent-hub": {
+      "type": "http",
+      "url": "https://api.singularitybridge.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+#### Local Development
+
+```json
+{
+  "mcpServers": {
+    "agent-hub": {
+      "type": "http",
+      "url": "http://localhost:3000/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+#### Both Environments
+
+Run local and production side-by-side for testing:
+
+```json
+{
+  "mcpServers": {
+    "agent-hub-sb": {
+      "type": "http",
+      "url": "http://localhost:3000/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    },
+    "agent-hub-sb-prod": {
+      "type": "http",
+      "url": "https://api.singularitybridge.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+### Endpoints
+
+| Environment | URL |
+|-------------|-----|
+| Production | `https://api.singularitybridge.net/api/mcp` |
+| Local | `http://localhost:3000/api/mcp` |
+
+---
+
+## Available Tools
+
+The MCP server exposes **42 tools** organized into these categories:
+
+### Agent Management
+
+Create, update, and manage your AI agents.
+
+| Tool | Description |
+|------|-------------|
+| `list_agents` | List all agents for your company |
+| `list_agents_by_team` | List agents in a specific team |
+| `get_agent_info` | Get agent details (name, model, config) |
+| `create_agent` | Create a new agent |
+| `update_agent` | Update agent metadata |
+| `delete_agent` | Delete an agent permanently |
+| `assign_agent_to_team` | Assign agent to teams |
+| `remove_agent_from_team` | Remove agent from teams |
+
+### Prompt Management
+
+Manage agent prompts with version history.
+
+| Tool | Description |
+|------|-------------|
+| `get_agent_prompt` | Get agent's current system prompt |
+| `update_agent_prompt` | Update agent's system prompt |
+| `list_prompt_history` | View prompt version history |
+| `get_prompt_version` | Get a specific prompt version |
+
+### Agent Execution
+
+Run agents and manage chat sessions.
+
+| Tool | Description |
+|------|-------------|
+| `execute` | Execute an agent with user input |
+| `create_session` | Start a new chat session |
+| `send_message` | Send a message to a session |
+| `get_session_messages` | Get session message history |
+| `list_sessions` | List all chat sessions |
+| `clear_session` | Clear messages from a session |
+| `delete_session` | Delete a session permanently |
+
+### Workspace
+
+Store and search documents, configs, and files.
+
+| Tool | Description |
+|------|-------------|
+| `list_workspace_items` | List items in workspace |
+| `get_workspace_item` | Get a specific item |
+| `add_workspace_item` | Add an item to workspace |
+| `delete_workspace_item` | Delete an item |
+| `move_workspace_item` | Move or rename an item |
+| `vector_search_workspace` | Semantic search across workspace |
+
+### Teams
+
+Organize agents into teams.
+
+| Tool | Description |
+|------|-------------|
+| `list_teams` | List all teams |
+| `get_team` | Get team details |
+| `create_team` | Create a new team |
+| `update_team` | Update team metadata |
+| `delete_team` | Delete a team |
+
+### Integrations
+
+Connect agents to external services.
+
+| Tool | Description |
+|------|-------------|
+| `list_integrations` | List available integrations |
+| `get_integration_details` | Get integration info and actions |
+| `trigger_integration_action` | Execute an integration action |
+| `check_integration_status` | Check if integrations are configured |
+| `update_agent_actions` | Enable/disable actions for an agent |
+
+### Cost Tracking
+
+Monitor AI usage and spending.
+
+| Tool | Description |
+|------|-------------|
+| `get_cost_summary` | Get costs by model, provider, assistant |
+| `get_daily_costs` | Get daily cost breakdown |
+
+### Models
+
+Discover available LLM models.
+
+| Tool | Description |
+|------|-------------|
+| `list_models` | List all available models with pricing |
+
+### UI Control
+
+Control the Agent Hub interface from Claude Code.
+
+| Tool | Description |
+|------|-------------|
+| `get_ui_context` | Get current UI state |
+| `navigate_to_page` | Navigate user's browser |
+| `open_workspace_file` | Open file in viewer |
+| `show_notification` | Display a notification |
+
+---
+
+## Examples
+
+### Execute an Agent
+
+```typescript
+// Basic execution
+await execute({
+  assistantId: "681b41850f470a9a746f280e",
+  userInput: "Search JIRA for issues about login"
+});
+
+// Using agent name instead of ID
+await execute({
+  assistantId: "Anna",
+  userInput: "Search JIRA for issues about login"
+});
+
+// With session context and prompt override
+await execute({
+  assistantId: "Anna",
+  userInput: "Search JIRA for issues about login",
+  sessionId: "optional-session-id",
+  systemPromptOverride: "You are a helpful assistant...",
+  includeToolCalls: true
+});
+```
+
+:::tip Tool Call Visibility
+MCP execute includes tool calls in the response by default. You'll see:
+- Which tools were called
+- Arguments passed to each tool
+- Results returned
+
+```
+Here are the JIRA issues about login...
+
+---
+**Tool Calls (1):**
+[
+  {
+    "tool": "jira_fetchTickets",
+    "args": { "jql": "summary ~ login" },
+    "result": [{ "key": "WM-762", "summary": "Add login field" }]
+  }
+]
+```
+:::
+
+### Manage Agents
+
+```typescript
+// List all agents
+const agents = await list_agents({ limit: 50 });
+
+// Create an agent
+await create_agent({
+  name: "Support Bot",
+  llmProvider: "openai",
+  llmModel: "gpt-4o",
+  description: "Handles customer support queries"
+});
+
+// Update an agent
+await update_agent({
+  agentId: "Support Bot",
+  llmModel: "gpt-4o-mini",
+  maxTokens: 4000
+});
+```
+
+### Work with Prompts
+
+```typescript
+// Get current prompt
+const prompt = await get_agent_prompt({ agentId: "Anna" });
+
+// Update prompt
+await update_agent_prompt({
+  agentId: "Anna",
+  prompt: "You are a helpful assistant specialized in..."
+});
+
+// View prompt history
+const history = await list_prompt_history({
+  agentId: "Anna",
+  limit: 10
+});
+
+// Restore a previous version
+const oldPrompt = await get_prompt_version({
+  agentId: "Anna",
+  version: 3
+});
+```
+
+### Chat Sessions
+
+```typescript
+// Start a session
+const session = await create_session({ agentId: "Anna" });
+
+// Send messages
+const response = await send_message({
+  sessionId: session.id,
+  message: "Hello, I need help with my order"
+});
+
+// Get conversation history
+const messages = await get_session_messages({
+  sessionId: session.id,
+  limit: 50
+});
+
+// Clean up
+await delete_session({ sessionId: session.id });
+```
+
+### Workspace Operations
+
+```typescript
+// List items
+const items = await list_workspace_items({
+  scope: "agent",
+  scopeId: "Anna"
+});
+
+// Add a document
+await add_workspace_item({
+  scope: "agent",
+  scopeId: "Anna",
+  itemPath: "/docs/guide.md",
+  content: "# Guide\n\nContent here..."
+});
+
+// Semantic search
+const results = await vector_search_workspace({
+  query: "authentication flow",
+  scope: "agent",
+  scopeId: "Anna",
+  limit: 10,
+  minScore: 0.7
+});
+```
+
+### Team Management
+
+```typescript
+// Create a team
+await create_team({
+  name: "Engineering",
+  description: "Engineering team agents",
+  icon: "Code",
+  iconType: "lucide"
+});
+
+// Assign agent to team
+await assign_agent_to_team({
+  agentId: "Anna",
+  teamIds: ["team-id-1", "team-id-2"]
+});
+```
+
+### Cost Tracking
+
+```typescript
+// Get summary
+const costs = await get_cost_summary({
+  startDate: "2025-01-01",
+  endDate: "2025-01-31"
+});
+
+// Get daily breakdown
+const daily = await get_daily_costs({
+  days: 30,
+  provider: "openai"
+});
+```
+
+### Integrations
+
+```typescript
+// List available integrations
+const integrations = await list_integrations();
+
+// Check which are configured
+const status = await check_integration_status({
+  integrationIds: ["jira", "slack"],
+  testConnection: true
+});
+
+// Enable actions for an agent
+await update_agent_actions({
+  agentId: "Anna",
+  addActions: ["jira.createTicket", "slack.sendMessage"]
+});
+
+// Trigger an action
+await trigger_integration_action({
+  integrationName: "jira",
+  actionName: "createTicket",
+  requestData: {
+    summary: "New ticket from Claude Code",
+    description: "Created via MCP",
+    projectKey: "PROJ"
+  }
+});
+```
+
+### UI Control
+
+```typescript
+// Get current context
+const context = await get_ui_context();
+
+// Navigate
+await navigate_to_page({ path: "/admin/assistants" });
+
+// Show notification
+await show_notification({
+  message: "Agent updated successfully!",
+  type: "success"
+});
+
+// Open a workspace file
+await open_workspace_file({
+  assistantId: "Anna",
+  path: "/docs/guide.md"
+});
+```
+
+---
+
+## Response Format
+
+### Success
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Operation completed successfully"
+    }
+  ]
+}
+```
+
+### Error
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Agent not found"
+  }
+}
+```
+
+---
+
+## Best Practices
+
+**Use agent names** — Most tools accept agent name instead of ID for convenience.
+
+**Batch operations** — Group related operations to minimize round trips.
+
+**Check prerequisites** — Use `check_integration_status` before enabling integration actions.
+
+**Use pagination** — Set appropriate `limit` and `offset` for large collections.
+
+**Handle errors gracefully** — Check for NOT_FOUND and other error codes.
+
+---
+
+## Related
+
+- [API Overview](/api/overview)
+- [Authentication](/api/authentication)
+- [Agents](/concepts/agents)
+- [Workspace](/concepts/workspace)
