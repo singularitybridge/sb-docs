@@ -40,13 +40,20 @@ Integrations extend agent capabilities by connecting to external services. They 
 | PhotoRoom | Image editing |
 | File Processing | CSV, Excel, PDF parsing |
 
+### Development
+
+| Integration | Description |
+|-------------|-------------|
+| [Fly.io](/integrations/fly) | Manage Fly.io apps and machines |
+| [OpenCode Sandbox](/integrations/opencode-sandbox) | Remote AI coding agent |
+| Terminal | Shell command execution |
+| Debug | Development utilities |
+
 ### Data & Infrastructure
 
 | Integration | Description |
 |-------------|-------------|
 | MongoDB | Database operations |
-| Terminal | Shell command execution |
-| Debug | Development utilities |
 
 ## How Integrations Work
 
@@ -135,8 +142,10 @@ Explore specific integrations:
 - [OpenAI](/integrations/openai) - AI services
 - [Claude](/integrations/claude) - Connect to Claude AI
 - [ElevenLabs](/integrations/elevenlabs) - Voice synthesis
+- [Fly.io](/integrations/fly) - Manage Fly.io apps and machines
 - [Google](/integrations/google) - Google services
 - [JIRA](/integrations/jira) - Ticket management
+- [OpenCode Sandbox](/integrations/opencode-sandbox) - Remote AI coding agent
 - [Perplexity](/integrations/perplexity) - Web search
 
 ---

@@ -5,44 +5,98 @@ This file provides guidance to Claude Code when working with the Agent Hub docum
 ## Development Commands
 
 ```bash
-npm run dev          # Start development server with hot reload
 npm run build        # Build production documentation
-npm run serve        # Serve built documentation
+npm run start        # Serve built documentation (use after build)
 ```
 
-## Documentation Maintenance
+## PM2 Configuration
 
-### Changelog Updates
+Run docs locally via PM2 (port 3002 to avoid conflict with sb-api on 3000):
 
-**IMPORTANT**: Before pushing changes to the main repositories (sb-api-services-v2 or sb-chat-ui), update the changelog:
+```bash
+# Serve the built docs (recommended)
+pm2 start "npm run start -- --port 3002" --name sb-docs --cwd /Users/avio/dev/sb/sb-docs
 
-1. Open `/docs/changelog.md`
-2. Add new entries under `[Unreleased]` section
-3. Categorize changes as:
-   - **Added** - New features
-   - **Changed** - Changes to existing functionality
-   - **Fixed** - Bug fixes
-   - **Removed** - Removed features
-   - **Security** - Security improvements
+# View logs
+pm2 logs sb-docs
 
-### Example Changelog Entry
-
-```markdown
-### Added
-- **Feature Name** - Brief description of the feature
-  - Sub-detail if needed
+# Restart after changes
+npm run build && pm2 restart sb-docs
 ```
 
-### When to Update Documentation
+Access docs at: http://localhost:3002/
 
-Update docs when:
-- Adding new API endpoints
-- Adding new features
-- Changing environment variables
-- Modifying integrations
-- Changing deployment procedures
+## Custom Components
 
-### Documentation Structure
+The docs use custom React components for consistent styling. Import them in `.mdx` files:
+
+### AiQuickStart
+Quick start callout with copy-to-clipboard prompt. Used for AI agent prompts.
+
+```mdx
+import AiQuickStart from '@site/src/components/AiQuickStart';
+
+<AiQuickStart
+  title="Want to get started quickly?"
+  description="Copy this prompt to your AI coding agent."
+  prompt={`Your prompt here...`}
+  includePageUrl={true}  // Appends current page URL to prompt
+/>
+```
+
+### InfoCallout
+Styled callout boxes for tips, warnings, and notes.
+
+```mdx
+import InfoCallout from '@site/src/components/InfoCallout';
+
+<InfoCallout title="Important Note" type="info">
+  Your content here.
+</InfoCallout>
+```
+
+Types: `info`, `warning`, `success`, `error`
+
+### FileTree
+Display file/folder structures.
+
+```mdx
+import FileTree, { file, folder } from '@site/src/components/FileTree';
+
+<FileTree
+  root="src/integrations/my_service/"
+  items={[
+    file('config.json', 'Configuration file'),
+    folder('actions/', [
+      file('index.ts'),
+    ]),
+  ]}
+/>
+```
+
+## Sidebar Configuration
+
+Edit `sidebars.ts` to modify navigation. All categories use `collapsed: false` to keep sections open by default.
+
+```typescript
+{
+  type: 'category',
+  label: 'Section Name',
+  collapsed: false,  // Keep open
+  items: ['path/to/doc'],
+}
+```
+
+## Styling
+
+CSS is in `src/css/custom.css`. Key design patterns:
+- IBM Plex Sans/Mono fonts
+- Zinc color palette (light/dark mode)
+- Compact navbar (3rem height)
+- 16rem sidebar width
+- All sections open by default (no carets)
+
+## Documentation Structure
 
 ```
 docs/
@@ -50,57 +104,39 @@ docs/
 ├── getting-started.md    # Getting started guide
 ├── changelog.md          # Changelog (update before pushes!)
 ├── agents/               # Agent documentation
-├── api/                  # API reference
+├── api/                  # API reference (includes MCP server guide)
 ├── concepts/             # Core concepts
 ├── deployment/           # Deployment guides
-├── developers/           # Developer guides (including integration development)
+├── developers/           # Developer guides
 ├── features/             # Feature documentation
-└── integrations/         # Integration catalog (existing integrations only)
+└── integrations/         # Integration catalog
 ```
 
-### Integration Documentation
+## Documentation Guidelines
 
-The integration documentation is split into two areas:
+### When to Update Docs
+- Adding new API endpoints
+- Adding new MCP tools
+- Adding new features
+- Changing environment variables
+- Modifying integrations
 
-1. **`/integrations/overview`** - Catalog of existing integrations
-   - Lists available integrations by category
-   - How to configure integrations (API keys)
-   - How to use integrations with agents
-   - Links to individual integration docs
+### Changelog Updates
+Before pushing changes, update `/docs/changelog.md`:
 
-2. **`/developers/integration-development`** - Technical guide for building integrations
-   - Complete step-by-step guide for developers
-   - Integration structure and file formats
-   - Action definitions and best practices
-   - AI coding agent prompt template
-   - Testing workflow
-
-**Important**: Keep these separate - the overview is for users wanting to USE integrations, the developer guide is for those wanting to BUILD new integrations.
-
-## PM2 Configuration
-
-Run docs locally via PM2 (port 3002 to avoid conflict with sb-api on 3000):
-```bash
-pm2 start "npm run dev -- --port 3002" --name "sb-docs" --cwd /Users/avio/dev/sb/sb-docs
+```markdown
+### Added
+- **Feature Name** - Brief description
 ```
 
-Access docs at: http://localhost:3002/
+Categories: Added, Changed, Fixed, Removed, Security
 
-View logs:
-```bash
-pm2 logs sb-docs
-```
+### File Types
+- Use `.md` for simple pages
+- Use `.mdx` when importing React components
 
-## Build & Preview
-
-```bash
-# Build for production
-npm run build
-
-# Preview the build
-npm run serve
-```
-
-## Sidebar Configuration
-
-Edit `sidebars.ts` to add or modify navigation items.
+### MCP Server Documentation
+The MCP server guide (`/api/mcp-server.mdx`) documents all 42 tools. When adding new MCP tools, update:
+1. Tool count in the intro
+2. Tool table in the appropriate category
+3. Example if the tool has complex usage

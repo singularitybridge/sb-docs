@@ -12,6 +12,24 @@ All notable changes to Agent Hub are documented here.
   - Added Claude integration to sidebar navigation
 
 ### Added
+- **Fly.io Integration** - Full Fly.io infrastructure management (21 actions):
+  - **App Management:** `flyListApps`, `flyGetApp`
+  - **Machine Lifecycle:** `flyListMachines`, `flyGetMachine`, `flyCreateMachine`, `flyDeleteMachine`
+  - **Machine Control:** `flyStartMachine`, `flyStopMachine`, `flyRestartMachine`, `flySuspendMachine`, `flyWaitForMachine`
+  - **Configuration:** `flyUpdateMachineConfig` - Update env vars, resources, auto-stop mode
+  - **Secrets:** `flyListSecrets`, `flySetSecrets`, `flyUnsetSecrets` - Manage app secrets
+  - **Command Execution:** `flyExecCommand` - Execute commands on running machines (like SSH)
+  - **Volumes:** `flyListVolumes`, `flyCreateVolume`, `flyDeleteVolume`
+  - **Scaling:** `flyScaleMachines`, `flyScaleWithVolumes` - Scale with automatic volume management
+  - Works alongside OpenCode Sandbox for full sandbox management
+- **OpenCode Sandbox Integration** - Remote AI coding agent integration:
+  - `opencodeCreateSession` - Create new coding sessions
+  - `opencodeSendPrompt` - Send prompts to AI coding agent
+  - `opencodeGetMessages` - Retrieve conversation history and tool outputs
+  - `opencodeGetSession` - Get session details and stats
+  - `opencodeListSessions` - List all available sessions
+  - Deployed on Fly.io with persistent storage
+  - Full bash/terminal and git access in isolated environment
 - **MCP Session Management Tools** - 6 new tools for programmatic agent testing (total 42 tools):
   - `create_session` - Start new session with agent (by ID or name)
   - `send_message` - Send message and get assistant response

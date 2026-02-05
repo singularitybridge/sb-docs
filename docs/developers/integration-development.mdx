@@ -2,16 +2,18 @@
 sidebar_position: 3
 title: Building Integrations
 description: Create custom integrations for Agent Hub - Guide for developers and AI coding agents
+hide_table_of_contents: true
 ---
 
 import AiQuickStart from '@site/src/components/AiQuickStart';
+import InfoCallout from '@site/src/components/InfoCallout';
+import FileTree, { file, folder } from '@site/src/components/FileTree';
 
 # Building Integrations
 
 <AiQuickStart
   title="Want to get started quickly?"
   description="Copy this prompt and pass it to your AI coding agent (Claude, ChatGPT, Cursor, etc.)."
-  docsUrl="https://docs.singularitybridge.net/developers/integration-development"
   prompt={`I want to create a new integration for Agent Hub.
 
 Please help me build it:
@@ -34,9 +36,9 @@ Keep asking questions until you have everything you need. Start simple - we can 
 
 This guide explains how to create custom integrations for Agent Hub. It's designed for both human developers and AI coding agents.
 
-:::info Plugin Architecture
+<InfoCallout title="Plugin Architecture">
 Agent Hub uses a **plugin-based architecture**. New integrations are automatically discovered at startup - no registry modifications or hardcoded mappings required. Just add your integration folder and restart the server.
-:::
+</InfoCallout>
 
 ## Codebase Location
 
@@ -61,15 +63,18 @@ To create a new integration:
 
 ## Integration Structure
 
-```
-sb-api-services-v2/src/integrations/your_service/
-├── integration.config.json     # Required: Metadata and API key definitions
-├── your_service.actions.ts     # Required: Action definitions and handlers
-├── your_service.service.ts     # Optional: Business logic and API calls
-└── translations/               # Optional: i18n support
-    ├── en.json
-    └── he.json
-```
+<FileTree
+  root="sb-api-services-v2/src/integrations/your_service/"
+  items={[
+    file('integration.config.json', 'Required: Metadata and API key definitions'),
+    file('your_service.actions.ts', 'Required: Action definitions and handlers'),
+    file('your_service.service.ts', 'Optional: Business logic and API calls'),
+    folder('translations/', [
+      file('en.json'),
+      file('he.json'),
+    ], 'Optional: i18n support'),
+  ]}
+/>
 
 ## Step 1: Configuration File
 
@@ -118,10 +123,14 @@ Each entry in `requiredApiKeys` defines a credential field:
 |-------|------|----------|-------------|
 | `key` | string | Yes | Unique credential identifier (stored encrypted) |
 | `label` | string | Yes | Display label in UI |
-| `type` | `"secret"` \| `"text"` | Yes | `secret` = password field, `text` = visible input |
+| `type` | `"secret"` | Yes | Always use `"secret"` for all credentials |
 | `placeholder` | string | No | Input placeholder text |
 | `description` | string | No | Help text shown below input |
 | `helpUrl` | string | No | Link to documentation for getting credentials |
+
+<InfoCallout title="Always Use type: secret">
+**Important:** Always use `type: "secret"` for ALL credential fields, including URLs and non-sensitive values. The `type: "text"` option has known issues where values may not be saved correctly by the UI. Even for fields like domains or URLs that aren't technically secrets, use `type: "secret"` to ensure they persist properly.
+</InfoCallout>
 
 ### Available Categories
 
@@ -292,34 +301,76 @@ For complex integrations, separate business logic into a service file:
 
 ```typescript
 // your_service.service.ts
-import { getCompanyApiKeyValue } from '../../services/api.key.service';
+import axios from 'axios';
+import { getApiKey } from '../../services/api.key.service';
+
+// Helper to get all required credentials
+async function getCredentials(companyId: string) {
+  const apiKey = await getApiKey(companyId, 'your_service_api_key');
+  const baseUrl = await getApiKey(companyId, 'your_service_url');
+
+  if (!apiKey || !baseUrl) {
+    throw new Error('Missing configuration. Please configure API key and URL.');
+  }
+
+  return { apiKey, baseUrl: baseUrl.replace(/\/$/, '') };
+}
 
 export async function performAction(
   companyId: string,
   params: ActionParams,
 ): Promise<ActionResult> {
-  // Fetch API key from encrypted storage
-  const apiKey = await getCompanyApiKeyValue(companyId, 'your_service_api_key');
+  const { apiKey, baseUrl } = await getCredentials(companyId);
 
-  if (!apiKey) {
-    throw new Error('Your Service API key is not configured');
+  try {
+    const response = await axios.post(
+      `${baseUrl}/v1/action`,
+      params,
+      {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    // Handle common error cases
+    if (error.response?.status === 502) {
+      throw new Error('Service is waking up. Please retry in a few seconds.');
+    }
+    throw new Error(
+      error.response?.data?.error || error.message || 'Action failed'
+    );
+  }
+}
+
+// Validate connection (called by Test Connection button)
+export async function validateConnection(
+  apiKeys: Record<string, string>
+): Promise<{ success: boolean; message?: string; error?: string }> {
+  const { your_service_api_key, your_service_url } = apiKeys || {};
+
+  if (!your_service_api_key || !your_service_url) {
+    return { success: false, error: 'Missing API key or URL' };
   }
 
-  // Make API call
-  const response = await fetch('https://api.yourservice.com/v1/action', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  try {
+    const response = await axios.get(
+      `${your_service_url.replace(/\/$/, '')}/health`,
+      {
+        headers: { 'Authorization': `Bearer ${your_service_api_key}` },
+        timeout: 10000,
+      }
+    );
 
-  if (!response.ok) {
-    throw new Error(`API error: ${response.statusText}`);
+    return response.status === 200
+      ? { success: true, message: 'Connected successfully' }
+      : { success: false, error: `Unexpected status: ${response.status}` };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Connection failed' };
   }
-
-  return response.json();
 }
 ```
 
@@ -400,6 +451,7 @@ Study these existing integrations in `sb-api-services-v2/src/integrations/` as r
 | Integration | Path | Complexity | Features |
 |-------------|------|------------|----------|
 | `perplexity` | `src/integrations/perplexity/` | Simple | Single API key, one action |
+| `opencode_sandbox` | `src/integrations/opencode_sandbox/` | Medium | Multiple credentials, async operations, connection validation |
 | `jira` | `src/integrations/jira/` | Medium | Multiple API keys, multiple actions |
 | `openai` | `src/integrations/openai/` | Complex | Multiple actions, file handling |
 | `elevenlabs` | `src/integrations/elevenlabs/` | Medium | Audio generation, voice cloning |
@@ -452,20 +504,60 @@ Study these existing integrations in `sb-api-services-v2/src/integrations/` as r
     {
       "key": "jira_domain",
       "label": "Domain",
-      "type": "text",
+      "type": "secret",
       "placeholder": "your-company",
       "description": "Your Atlassian domain (e.g., your-company.atlassian.net)"
     },
     {
       "key": "jira_email",
       "label": "Email",
-      "type": "text",
+      "type": "secret",
       "placeholder": "user@company.com",
       "description": "Email associated with your JIRA account"
     }
   ]
 }
 ```
+
+### Example: OpenCode Sandbox (Async Operations)
+
+This integration demonstrates handling async operations and proper credential configuration:
+
+**integration.config.json:**
+```json
+{
+  "name": "opencode_sandbox",
+  "displayName": "OpenCode Sandbox",
+  "description": "Remote AI coding agent for code modifications",
+  "icon": "code",
+  "category": "development",
+  "actionCreator": "createOpencodeSandboxActions",
+  "actionsFile": "opencode_sandbox.actions.ts",
+  "requiredApiKeys": [
+    {
+      "key": "opencode_server_url",
+      "label": "Server URL",
+      "type": "secret",
+      "placeholder": "https://your-app.fly.dev/opencode",
+      "description": "OpenCode server base URL"
+    },
+    {
+      "key": "opencode_server_password",
+      "label": "Server Password",
+      "type": "secret",
+      "placeholder": "your-password",
+      "description": "Basic auth password for OpenCode server"
+    }
+  ]
+}
+```
+
+**Key patterns in this integration:**
+- Uses `axios` with basic auth for API calls
+- Separates service logic into `opencode_sandbox.service.ts`
+- Implements `validateConnection` for the "Test Connection" button
+- Uses `getApiKey(companyId, 'key_name')` for credential retrieval
+- Returns async operation results with polling guidance
 
 ## Best Practices
 
@@ -533,8 +625,38 @@ Body: { "data": { ...params } }
 2. Check API key names match between config and validation function
 3. Test the API call manually with curl
 
+### API keys not saving or "Missing API key" errors
+
+**Symptom:** You configure API keys in the UI, click Save, but the integration still shows "Missing API key" or credentials aren't found.
+
+**Cause:** Using `type: "text"` instead of `type: "secret"` in `requiredApiKeys`.
+
+**Solution:** Change ALL credential fields to `type: "secret"`:
+
+```json
+// ❌ WRONG - values may not persist
+{
+  "key": "my_server_url",
+  "type": "text",  // This doesn't save properly!
+  ...
+}
+
+// ✅ CORRECT - always use secret
+{
+  "key": "my_server_url",
+  "type": "secret",  // Works for URLs, domains, etc.
+  ...
+}
+```
+
 ### Actions not available to agents
 
 1. Verify actions are listed in `/api/integrations/discover`
 2. Check agent's `allowedActions` includes your integration
 3. Ensure action names follow `integration.actionName` format
+
+### Action execution fails with context errors
+
+1. Ensure you validate `context.companyId` exists before using it
+2. Use `getApiKey(context.companyId, 'key_name')` for credential lookup
+3. Wrap business logic in `executeAction()` for consistent error handling

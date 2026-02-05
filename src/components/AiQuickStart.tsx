@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
-import { Copy, Check, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Zap, Eye, EyeOff, Copy, Check } from 'lucide-react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useLocation } from '@docusaurus/router';
 
 interface AiQuickStartProps {
   title?: string;
   description?: string;
   prompt: string;
-  docsUrl?: string;
+  /** If true, automatically appends the current page URL to the prompt */
+  includePageUrl?: boolean;
 }
 
 export default function AiQuickStart({
-  title = "Quick Start with AI",
-  description = "Copy the prompt and pass it to your AI coding agent.",
+  title = "Want to get started quickly?",
+  description = "Copy this prompt and pass it to your AI coding agent.",
   prompt,
-  docsUrl,
+  includePageUrl = true,
 }: AiQuickStartProps): React.ReactElement {
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  // Build the full prompt with docs reference
-  const fullPrompt = docsUrl
-    ? `${prompt}\n\nReference documentation: ${docsUrl}`
+  const { siteConfig } = useDocusaurusContext();
+  const location = useLocation();
+
+  // Build the full page URL from site config and current path
+  const pageUrl = includePageUrl
+    ? `${siteConfig.url}${location.pathname}`
+    : null;
+
+  const fullPrompt = pageUrl
+    ? `${prompt}\n\nReference documentation: ${pageUrl}`
     : prompt;
 
   const handleCopy = async () => {
@@ -34,29 +44,27 @@ export default function AiQuickStart({
 
   return (
     <div className="ai-quick-start">
-      <div className="ai-quick-start-content">
-        <div className="ai-quick-start-header">
-          <Sparkles size={18} className="ai-quick-start-icon" />
-          <div className="ai-quick-start-text">
-            <span className="ai-quick-start-title">{title}</span>
-            <span className="ai-quick-start-description">{description}</span>
-          </div>
+      <div className="ai-quick-start-header">
+        <Zap size={20} className="ai-quick-start-icon" />
+        <div className="ai-quick-start-text">
+          <span className="ai-quick-start-title">{title}</span>
+          <span className="ai-quick-start-description">{description}</span>
         </div>
         <div className="ai-quick-start-actions">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="ai-quick-start-preview-btn"
+            className="ai-quick-start-btn ai-quick-start-btn-secondary"
             title={expanded ? "Hide prompt" : "Preview prompt"}
           >
-            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {expanded ? <EyeOff size={14} /> : <Eye size={14} />}
             <span>{expanded ? "Hide" : "Preview"}</span>
           </button>
           <button
             onClick={handleCopy}
-            className="ai-quick-start-copy-btn"
+            className="ai-quick-start-btn ai-quick-start-btn-secondary"
             title={copied ? "Copied!" : "Copy prompt to clipboard"}
           >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
+            {copied ? <Check size={14} /> : <Copy size={14} />}
             <span>{copied ? "Copied!" : "Copy Prompt"}</span>
           </button>
         </div>
