@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import { KeyRound, Server, BookOpen } from 'lucide-react';
+
 # API Overview
 
 The SB Agent Hub API provides RESTful endpoints for managing AI agents, sessions, teams, and more.
@@ -206,6 +208,20 @@ curl -X POST -H "Authorization: Bearer $TOKEN" \
 
 ## Next Steps
 
-- [Authentication](/api/authentication)
-- [MCP Server](/api/mcp-server)
-- [Endpoint Reference](/api/endpoints/assistants)
+<div className="nextstep-grid">
+<a href="/api/authentication" className="nextstep-card">
+  <KeyRound size={20} className="nextstep-icon" />
+  <h3>Authentication</h3>
+  <p>API keys and OAuth setup</p>
+</a>
+<a href="/api/mcp-server" className="nextstep-card">
+  <Server size={20} className="nextstep-icon" />
+  <h3>MCP Server</h3>
+  <p>Model Context Protocol integration</p>
+</a>
+<a href="/api/endpoints/assistants" className="nextstep-card">
+  <BookOpen size={20} className="nextstep-icon" />
+  <h3>Endpoint Reference</h3>
+  <p>Full API endpoint documentation</p>
+</a>
+</div>

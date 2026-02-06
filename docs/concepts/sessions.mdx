@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import { Bot, Zap, Code } from 'lucide-react';
+
 # Sessions
 
 Sessions represent conversations between users and agents. They maintain context, history, and state across multiple interactions.
@@ -128,6 +130,20 @@ Only one session per user-assistant pair can be active at a time.
 
 ## Related
 
-- [Agents](/concepts/agents)
-- [Actions](/concepts/actions)
-- [Sessions API](/api/endpoints/sessions)
+<div className="nextstep-grid">
+<a href="/concepts/agents" className="nextstep-card">
+  <Bot size={20} className="nextstep-icon" />
+  <h3>Agents</h3>
+  <p>AI assistant configuration</p>
+</a>
+<a href="/concepts/actions" className="nextstep-card">
+  <Zap size={20} className="nextstep-icon" />
+  <h3>Actions</h3>
+  <p>Agent capabilities and tools</p>
+</a>
+<a href="/api/endpoints/sessions" className="nextstep-card">
+  <Code size={20} className="nextstep-icon" />
+  <h3>Sessions API</h3>
+  <p>Session endpoint reference</p>
+</a>
+</div>

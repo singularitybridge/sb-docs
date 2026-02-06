@@ -5,6 +5,8 @@ title: Introduction
 description: Agent Hub documentation - Build, manage, and deploy AI agents
 ---
 
+import { Bot, MessageSquare, Zap, FolderOpen, Rocket, BookOpen, Plug } from 'lucide-react';
+
 # Agent Hub
 
 Agent Hub is an AI agent platform that lets you build, manage, and deploy AI agents. Each agent has its own identity, workspace, and tools - working like autonomous team members.
@@ -35,26 +37,38 @@ Or use the [MCP Server](/api/mcp-server) to manage agents from Claude, ChatGPT, 
 
 ## Core Concepts
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+<div className="concept-grid">
 
-<a href="/concepts/agents" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline">
-  <h3 className="text-lg font-semibold mb-1">Agents</h3>
-  <p className="text-sm text-gray-600 dark:text-gray-400">AI assistants with their own identity, prompt, and model configuration</p>
+<a href="/concepts/agents" className="concept-card">
+  <div className="concept-icon"><Bot size={20} /></div>
+  <div className="concept-content">
+    <h3>Agents</h3>
+    <p>AI assistants with their own identity, prompt, and model configuration</p>
+  </div>
 </a>
 
-<a href="/concepts/sessions" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline">
-  <h3 className="text-lg font-semibold mb-1">Sessions</h3>
-  <p className="text-sm text-gray-600 dark:text-gray-400">Conversations with message history and context management</p>
+<a href="/concepts/sessions" className="concept-card">
+  <div className="concept-icon"><MessageSquare size={20} /></div>
+  <div className="concept-content">
+    <h3>Sessions</h3>
+    <p>Conversations with message history and context management</p>
+  </div>
 </a>
 
-<a href="/concepts/actions" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline">
-  <h3 className="text-lg font-semibold mb-1">Actions</h3>
-  <p className="text-sm text-gray-600 dark:text-gray-400">Tools and capabilities agents can use via function calling</p>
+<a href="/concepts/actions" className="concept-card">
+  <div className="concept-icon"><Zap size={20} /></div>
+  <div className="concept-content">
+    <h3>Actions</h3>
+    <p>Tools and capabilities agents can use via function calling</p>
+  </div>
 </a>
 
-<a href="/concepts/workspace" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline">
-  <h3 className="text-lg font-semibold mb-1">Workspace</h3>
-  <p className="text-sm text-gray-600 dark:text-gray-400">File storage with vector search for RAG capabilities</p>
+<a href="/concepts/workspace" className="concept-card">
+  <div className="concept-icon"><FolderOpen size={20} /></div>
+  <div className="concept-content">
+    <h3>Workspace</h3>
+    <p>File storage with vector search for RAG capabilities</p>
+  </div>
 </a>
 
 </div>
@@ -70,24 +84,24 @@ Or use the [MCP Server](/api/mcp-server) to manage agents from Claude, ChatGPT, 
 
 ## Next Steps
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+<div className="nextstep-grid">
 
-<a href="/getting-started" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline text-center">
-  <div className="text-2xl mb-2">🚀</div>
-  <h3 className="text-base font-semibold">Getting Started</h3>
-  <p className="text-xs text-gray-600 dark:text-gray-400">Set up your first agent</p>
+<a href="/getting-started" className="nextstep-card">
+  <Rocket size={20} className="nextstep-icon" />
+  <h3>Getting Started</h3>
+  <p>Set up your first agent</p>
 </a>
 
-<a href="/api/overview" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline text-center">
-  <div className="text-2xl mb-2">📡</div>
-  <h3 className="text-base font-semibold">API Reference</h3>
-  <p className="text-xs text-gray-600 dark:text-gray-400">REST API documentation</p>
+<a href="/api/overview" className="nextstep-card">
+  <BookOpen size={20} className="nextstep-icon" />
+  <h3>API Reference</h3>
+  <p>REST API documentation</p>
 </a>
 
-<a href="/integrations/overview" className="block p-4 border rounded-lg hover:border-indigo-500 transition-colors no-underline text-center">
-  <div className="text-2xl mb-2">🔌</div>
-  <h3 className="text-base font-semibold">Integrations</h3>
-  <p className="text-xs text-gray-600 dark:text-gray-400">Connect external services</p>
+<a href="/integrations/overview" className="nextstep-card">
+  <Plug size={20} className="nextstep-icon" />
+  <h3>Integrations</h3>
+  <p>Connect external services</p>
 </a>
 
 </div>

@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import { PlusCircle, FileText, MessageSquare } from 'lucide-react';
+
 # Agents
 
 Agents (also called Assistants) are the core building blocks of SB Agent Hub. An agent is an AI-powered entity that can understand instructions, process data, and perform actions.
@@ -87,6 +89,20 @@ Depending on the model, agents can:
 
 ## Related
 
-- [Creating Agents](/agents/creating-agents)
-- [Configuring Prompts](/agents/configuring-prompts)
-- [Sessions](/concepts/sessions)
+<div className="nextstep-grid">
+<a href="/agents/creating-agents" className="nextstep-card">
+  <PlusCircle size={20} className="nextstep-icon" />
+  <h3>Creating Agents</h3>
+  <p>Build and configure agents</p>
+</a>
+<a href="/agents/configuring-prompts" className="nextstep-card">
+  <FileText size={20} className="nextstep-icon" />
+  <h3>Configuring Prompts</h3>
+  <p>Define agent behavior</p>
+</a>
+<a href="/concepts/sessions" className="nextstep-card">
+  <MessageSquare size={20} className="nextstep-icon" />
+  <h3>Sessions</h3>
+  <p>Conversation management</p>
+</a>
+</div>

@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import { Brain, MessageCircle, Mic, Plane, Globe, Ticket, Code2, Search, Wrench } from 'lucide-react';
+
 # Integrations Overview
 
 Integrations extend agent capabilities by connecting to external services. They provide actions that agents can use to interact with third-party systems.
@@ -135,19 +137,65 @@ Agents can call integration actions:
 }
 ```
 
-## Next Steps
+## Explore Integrations
 
-Explore specific integrations:
-
-- [OpenAI](/integrations/openai) - AI services
-- [Claude](/integrations/claude) - Connect to Claude AI
-- [ElevenLabs](/integrations/elevenlabs) - Voice synthesis
-- [Fly.io](/integrations/fly) - Manage Fly.io apps and machines
-- [Google](/integrations/google) - Google services
-- [JIRA](/integrations/jira) - Ticket management
-- [OpenCode Sandbox](/integrations/opencode-sandbox) - Remote AI coding agent
-- [Perplexity](/integrations/perplexity) - Web search
-
----
+<div className="concept-grid">
+<a href="/integrations/openai" className="concept-card">
+  <div className="concept-icon"><Brain size={20} /></div>
+  <div className="concept-content">
+    <h3>OpenAI</h3>
+    <p>Speech, transcription, code execution</p>
+  </div>
+</a>
+<a href="/integrations/claude" className="concept-card">
+  <div className="concept-icon"><MessageCircle size={20} /></div>
+  <div className="concept-content">
+    <h3>Claude</h3>
+    <p>Connect to Claude AI</p>
+  </div>
+</a>
+<a href="/integrations/elevenlabs" className="concept-card">
+  <div className="concept-icon"><Mic size={20} /></div>
+  <div className="concept-content">
+    <h3>ElevenLabs</h3>
+    <p>Voice synthesis and cloning</p>
+  </div>
+</a>
+<a href="/integrations/fly" className="concept-card">
+  <div className="concept-icon"><Plane size={20} /></div>
+  <div className="concept-content">
+    <h3>Fly.io</h3>
+    <p>Manage apps and machines</p>
+  </div>
+</a>
+<a href="/integrations/google" className="concept-card">
+  <div className="concept-icon"><Globe size={20} /></div>
+  <div className="concept-content">
+    <h3>Google</h3>
+    <p>Google services integration</p>
+  </div>
+</a>
+<a href="/integrations/jira" className="concept-card">
+  <div className="concept-icon"><Ticket size={20} /></div>
+  <div className="concept-content">
+    <h3>JIRA</h3>
+    <p>Ticket and project management</p>
+  </div>
+</a>
+<a href="/integrations/opencode-sandbox" className="concept-card">
+  <div className="concept-icon"><Code2 size={20} /></div>
+  <div className="concept-content">
+    <h3>OpenCode Sandbox</h3>
+    <p>Remote AI coding agent</p>
+  </div>
+</a>
+<a href="/integrations/perplexity" className="concept-card">
+  <div className="concept-icon"><Search size={20} /></div>
+  <div className="concept-content">
+    <h3>Perplexity</h3>
+    <p>Web search and research</p>
+  </div>
+</a>
+</div>
 
 **Want to build your own integration?** See the [Building Integrations](/developers/integration-development) guide.

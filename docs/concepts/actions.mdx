@@ -2,6 +2,8 @@
 sidebar_position: 3
 ---
 
+import { Plug, Terminal, Bot } from 'lucide-react';
+
 # Actions
 
 Actions are functions that agents can call to interact with external systems, process data, or perform specific tasks. They extend agent capabilities beyond text generation.
@@ -150,6 +152,20 @@ Supported operations:
 
 ## Related
 
-- [Integrations Overview](/integrations/overview)
-- [Code Execution](/features/code-execution)
-- [Agents](/concepts/agents)
+<div className="nextstep-grid">
+<a href="/integrations/overview" className="nextstep-card">
+  <Plug size={20} className="nextstep-icon" />
+  <h3>Integrations</h3>
+  <p>Connect external services</p>
+</a>
+<a href="/features/code-execution" className="nextstep-card">
+  <Terminal size={20} className="nextstep-icon" />
+  <h3>Code Execution</h3>
+  <p>Run code in sandboxes</p>
+</a>
+<a href="/concepts/agents" className="nextstep-card">
+  <Bot size={20} className="nextstep-icon" />
+  <h3>Agents</h3>
+  <p>AI assistant overview</p>
+</a>
+</div>

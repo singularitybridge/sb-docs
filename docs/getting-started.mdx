@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import { BookOpen, Plug, Code } from 'lucide-react';
+
 # Getting Started
 
 This guide will help you set up SB Agent Hub and create your first AI agent.
@@ -114,6 +116,20 @@ const result = await mcp__agent-hub-sb__create_agent({
 
 ## Next Steps
 
-- [Learn about Core Concepts](/concepts/agents)
-- [Configure Integrations](/integrations/overview)
-- [Explore the API](/api/overview)
+<div className="nextstep-grid">
+<a href="/concepts/agents" className="nextstep-card">
+  <BookOpen size={20} className="nextstep-icon" />
+  <h3>Core Concepts</h3>
+  <p>Learn about agents, sessions, and actions</p>
+</a>
+<a href="/integrations/overview" className="nextstep-card">
+  <Plug size={20} className="nextstep-icon" />
+  <h3>Integrations</h3>
+  <p>Configure external services</p>
+</a>
+<a href="/api/overview" className="nextstep-card">
+  <Code size={20} className="nextstep-icon" />
+  <h3>API Reference</h3>
+  <p>Explore the REST API</p>
+</a>
+</div>

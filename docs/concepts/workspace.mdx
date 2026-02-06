@@ -2,6 +2,8 @@
 sidebar_position: 4
 ---
 
+import { Search, Database, Code } from 'lucide-react';
+
 # Workspace
 
 The Workspace is a file storage system that allows agents to access, create, and manage documents and data. It enables RAG (Retrieval-Augmented Generation) capabilities.
@@ -174,6 +176,20 @@ await mcp__agent-hub-sb__add_workspace_item({
 
 ## Related
 
-- [Vector Search Feature](/features/vector-search)
-- [RAG Feature](/features/rag)
-- [Workspace API](/api/endpoints/workspace)
+<div className="nextstep-grid">
+<a href="/features/vector-search" className="nextstep-card">
+  <Search size={20} className="nextstep-icon" />
+  <h3>Vector Search</h3>
+  <p>Semantic document retrieval</p>
+</a>
+<a href="/features/rag" className="nextstep-card">
+  <Database size={20} className="nextstep-icon" />
+  <h3>RAG</h3>
+  <p>Retrieval-augmented generation</p>
+</a>
+<a href="/api/endpoints/workspace" className="nextstep-card">
+  <Code size={20} className="nextstep-icon" />
+  <h3>Workspace API</h3>
+  <p>Workspace endpoint reference</p>
+</a>
+</div>

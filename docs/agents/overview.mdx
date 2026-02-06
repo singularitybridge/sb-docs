@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import { PlusCircle, FileText, Users } from 'lucide-react';
+
 # Agents Overview
 
 Agents are AI-powered assistants that can be customized for specific tasks, domains, or workflows. This section covers everything you need to know about working with agents.
@@ -123,6 +125,20 @@ Track agent performance:
 
 ## Next Steps
 
-- [Creating Agents](/agents/creating-agents)
-- [Configuring Prompts](/agents/configuring-prompts)
-- [Teams](/agents/teams)
+<div className="nextstep-grid">
+<a href="/agents/creating-agents" className="nextstep-card">
+  <PlusCircle size={20} className="nextstep-icon" />
+  <h3>Creating Agents</h3>
+  <p>Build and configure new agents</p>
+</a>
+<a href="/agents/configuring-prompts" className="nextstep-card">
+  <FileText size={20} className="nextstep-icon" />
+  <h3>Configuring Prompts</h3>
+  <p>Define agent behavior</p>
+</a>
+<a href="/agents/teams" className="nextstep-card">
+  <Users size={20} className="nextstep-icon" />
+  <h3>Teams</h3>
+  <p>Organize agents into groups</p>
+</a>
+</div>
