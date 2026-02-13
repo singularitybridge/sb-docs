@@ -5,9 +5,17 @@ All notable changes to Agent Hub are documented here.
 ## [Unreleased]
 
 ### Added
+- **Dynamic Model API** - New `GET /api/models` endpoint serves LLM models grouped by provider with labels, descriptions, and pricing. Single source of truth for frontend dropdowns and MCP `list_models` tool. Supports `?provider=` filter.
 - **Cmd+K Vector Search** - Command palette workspace search now uses AI-powered vector search (same as workspace finder view) for semantic results when query is 3+ characters, with Fuse.js fallback
 
+### Changed
+- **Dynamic Model Dropdown** - Assistant create/edit form now fetches models from the API instead of hardcoding them. New models only need to be added in the backend.
+- **Legacy Model Cleanup** - Removed outdated models (GPT-4o, GPT-4o-mini, Claude Sonnet 4.0) from model listings. Existing assistants using these models continue to work.
+
 ### Removed
+- **OpenAI Key Requirement** - Removed `validateApiKeys(['openai_api_key'])` middleware from 13+ provider-agnostic routes. Companies without OpenAI keys can now use Anthropic or Google models without errors.
+- **Legacy OpenAI Code** - Deleted unused `oai.assistant.service.ts` (old Assistants API) and `run-management.service.ts` (legacy threads/runs). Moved `verifyOpenAiKey` to `verification.service.ts`.
+- **Template Processing** - Removed Handlebars template processing (`processTemplate`) from message handling and action execution pipelines.
 - **Session Language** - Removed `language` field from Session model and related PUT/GET `/language` routes. Language is no longer stored per-session; integrations default to English.
 
 ### Changed
