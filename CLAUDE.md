@@ -136,7 +136,11 @@ Categories: Added, Changed, Fixed, Removed, Security
 - Use `.mdx` when importing React components
 
 ### MCP Server Documentation
-The MCP server guide (`/api/mcp-server.mdx`) documents all 42 tools. When adding new MCP tools, update:
+The MCP server guide (`/api/mcp-server.mdx`) documents all 43 tools. When adding new MCP tools, update:
 1. Tool count in the intro
 2. Tool table in the appropriate category
 3. Example if the tool has complex usage
+
+## Agent Hub Workspace — Knowledge Persistence
+
+Multiple Claude Code sessions run in parallel on the SB project. Use the Agent Hub workspace (via `mcp__agent-hub-sb__*` MCP tools) to search for existing plans, research, and decisions before starting work. Store new findings at company scope so other sessions can access them. Key paths: `/engineering/plans/`, `/products/shmutzi/`, `/products/agent-hub/`.

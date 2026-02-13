@@ -43,6 +43,8 @@ A session is a stateful conversation container that:
 | `messages` | Conversation history |
 | `createdAt` | Session start time |
 | `updatedAt` | Last activity time |
+| `channel` | Origin channel (e.g., `web`, `whatsapp`, `api`) |
+| `channelUserId` | User identifier in the origin channel |
 
 ## Creating a Session
 
@@ -113,6 +115,17 @@ Sessions are created when a user starts a conversation and remain active until e
 | `active: false` | Closed or superseded session |
 
 Only one session per user-assistant pair can be active at a time.
+
+## Session TTL (Auto-Expiry)
+
+Agents can be configured with a `sessionTtlHours` value that automatically expires sessions after a period of inactivity. When a session's last activity exceeds the TTL, it is considered expired and will be closed automatically.
+
+This is useful for:
+- Cleaning up abandoned conversations
+- Enforcing conversation time limits for support agents
+- Managing resource usage in high-volume deployments
+
+The TTL is set on the agent configuration (see [Creating Agents](/agents/creating-agents)) and applies to all sessions created with that agent.
 
 ## Best Practices
 

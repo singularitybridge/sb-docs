@@ -20,8 +20,7 @@ curl -X POST https://api.singularitybridge.net/api/assistants \
     "llmProvider": "openai",
     "llmModel": "gpt-4o",
     "llmPrompt": "You are a helpful customer support agent...",
-    "maxTokens": 4096,
-    "language": "en"
+    "maxTokens": 4096
   }'
 ```
 
@@ -54,8 +53,7 @@ const agent = await mcp__agent-hub-sb__create_agent({
 | `description` | string | - | Brief description |
 | `llmPrompt` | string | - | System prompt |
 | `maxTokens` | number | 25000 | Max response tokens |
-| `language` | string | `en` | Language code |
-| `voice` | string | `alloy` | TTS voice ID |
+| `sessionTtlHours` | number | - | Auto-expire sessions after N hours of inactivity |
 | `teamIds` | string[] | - | Team assignments |
 
 ## Step-by-Step Guide
