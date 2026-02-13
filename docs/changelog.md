@@ -4,6 +4,12 @@ All notable changes to Agent Hub are documented here.
 
 ## [Unreleased]
 
+### Added
+- **Cmd+K Vector Search** - Command palette workspace search now uses AI-powered vector search (same as workspace finder view) for semantic results when query is 3+ characters, with Fuse.js fallback
+
+### Removed
+- **Session Language** - Removed `language` field from Session model and related PUT/GET `/language` routes. Language is no longer stored per-session; integrations default to English.
+
 ### Changed
 - **Integration Documentation Restructured** - Separated user docs from developer docs:
   - `/integrations/overview` now only shows existing integrations catalog
